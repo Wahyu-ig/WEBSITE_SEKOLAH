@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XII.8 — SMANSAKA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --black:#000;
+  --white:#fff;
+  --gray:#888;
+  --glass:rgba(255,255,255,0.06);
+  --glass-border:rgba(255,255,255,0.12);
+  --accent:#a8d8ff;
+  --accent2:#ffd4a8;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:#000;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ─── CUSTOM SCROLLBAR ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+/* ─── HERO ─── */
+#hero{
+  position:relative;
+  height:100vh;
+  min-height:600px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;inset:0;
+  background-image: url('BACKGROUND/IMG-20260408-WA0068.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index:0;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(26,10,0,0.8) 0%, rgba(0,8,32,0.8) 40%, #000 85%);
+}
+
+.hero-bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(120,80,30,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 70% 60%, rgba(20,60,120,0.2) 0%, transparent 60%);
+}
+
+.hero-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.3;z-index:1;
+}
+
+.hero-particles{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+}
+
+.particle{
+  position:absolute;
+  width:1px;height:1px;
+  background:#fff;
+  border-radius:50%;
+  animation:twinkle var(--d,3s) var(--delay,0s) infinite ease-in-out;
+}
+
+@keyframes twinkle{
+  0%,100%{opacity:0.1;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(2);}
+}
+
+.hero-content{
+  position:relative;z-index:2;
+  text-align:center;
+}
+
+.hero-year{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(5rem,18vw,14rem);
+  font-weight:700;
+  letter-spacing:-0.02em;
+  line-height:1;
+  color:#fff;
+  position:relative;
+  display:inline-block;
+  /* Glitch Base */
+  text-shadow: 0.05em 0 0 rgba(255,0,255,0.75),
+              -0.025em -0.05em 0 rgba(0,255,255,0.75),
+               0.025em 0.05em 0 rgba(255,255,0,0.75);
+  animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 rgba(255,0,255,0.75), -0.025em -0.05em 0 rgba(0,255,255,0.75), 0.025em 0.05em 0 rgba(255,255,0,0.75);
+  }
+  2%, 5% {
+    text-shadow: -0.05em -0.025em 0 rgba(255,0,255,0.75), 0.025em 0.025em 0 rgba(0,255,255,0.75), -0.05em -0.05em 0 rgba(255,255,0,0.75);
+  }
+  8%, 10% {
+    text-shadow: 0.025em 0.05em 0 rgba(255,0,255,0.75), 0.05em 0 0 rgba(0,255,255,0.75), 0 -0.05em 0 rgba(255,255,0,0.75);
+  }
+  15%, 100% {
+    text-shadow: none;
+  }
+}
+
+.hero-year::after{
+  content:'|';
+  animation:blink 1s step-end infinite;
+  color:var(--accent);
+  margin-left:4px;
+}
+
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.hero-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(0.75rem,2vw,1rem);
+  font-weight:300;
+  letter-spacing:0.4em;
+  color:rgba(255,255,255,0.45);
+  text-transform:uppercase;
+  margin-top:1rem;
+}
+
+.scroll-hint{
+  position:absolute;
+  bottom:2.5rem;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+}
+
+.scroll-hint span{
+  font-size:0.65rem;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  font-family:'Space Mono',monospace;
+}
+
+.scroll-arrow{
+  width:20px;height:30px;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:10px;
+  position:relative;
+}
+
+.scroll-arrow::after{
+  content:'';
+  position:absolute;
+  top:6px;left:50%;
+  transform:translateX(-50%);
+  width:2px;height:8px;
+  background:#fff;
+  border-radius:2px;
+  animation:scrollDown 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollDown{
+  0%{transform:translateX(-50%) translateY(0);opacity:1;}
+  100%{transform:translateX(-50%) translateY(10px);opacity:0;}
+}
+
+/* ─── MARQUEE ─── */
+#marquee-section{
+  background:#000;
+  padding:3rem 0;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.marquee-track{
+  display:flex;
+  gap:0;
+  white-space:nowrap;
+  margin-bottom:1rem;
+}
+
+.marquee-track:last-child{margin-bottom:0;}
+
+.marquee-inner{
+  display:inline-flex;
+  gap:0;
+  animation:marqueeLeft 18s linear infinite;
+}
+
+.marquee-inner.reverse{
+  animation:marqueeRight 18s linear infinite;
+}
+
+@keyframes marqueeLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes marqueeRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+
+.marquee-text{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.2rem,3vw,2rem);
+  font-weight:700;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.15);
+  letter-spacing:0.1em;
+  padding:0 1.5rem;
+  white-space:nowrap;
+}
+
+.marquee-text.accent{
+  -webkit-text-stroke:1px var(--accent);
+  color:transparent;
+}
+
+#wali-kelas{
+  background:#000;
+  padding:10rem 2rem;
+  max-width:1000px;
+  margin:0 auto;
+  position:relative;
+  overflow:visible;
+}
+
+.wali-spotlight {
+  position: absolute;
+  inset: -100px;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(200, 169, 110, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wali-card{
+  display:flex;
+  gap:3rem;
+  align-items:center;
+  background:var(--glass);
+  border:1px solid rgba(200, 169, 110, 0.2);
+  border-radius:32px;
+  padding:3rem;
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  opacity:0;
+  transform:translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease;
+  z-index: 2;
+  transform-style: preserve-3d;
+}
+
+/* Decorative HUD */
+.hud-tag {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: rgba(200, 169, 110, 0.6);
+  padding: 4px 10px;
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.4);
+  pointer-events: none;
+  animation: hud-float 3s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes hud-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.wali-card.visible{opacity:1;transform:translateY(0);}
+
+.wali-photo{
+  flex-shrink:0;
+  width:160px;height:220px;
+  border-radius:16px;
+  background-size: cover;
+  background-position: center;
+  border:2px solid rgba(200,169,110,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background-image: url('WALI KELAS/IMG-20260408-WA0124.jpg');
+  box-shadow: 0 0 20px rgba(200,169,110,0.2);
+}
+
+.wali-info{flex:1;}
+
+.wali-quote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.35rem);
+  color:rgba(255,255,255,0.8);
+  line-height:1.6;
+  margin-bottom:1.5rem;
+  border-left:2px solid var(--accent);
+  padding-left:1.2rem;
+}
+
+.wali-name{
+  font-family:'DM Sans',sans-serif;
+  font-size:1.1rem;
+  font-weight:500;
+  color:#fff;
+}
+
+.wali-role{
+  font-size:0.8rem;
+  color:rgba(255,255,255,0.4);
+  margin-top:0.25rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+}
+
+/* ─── SISWA GRID ─── */
+#siswa-section{
+  background:#050505;
+  padding:6rem 2rem;
+}
+
+.section-header{
+  max-width:1200px;
+  margin:0 auto 3rem;
+}
+
+.section-title{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.5rem,4vw,2.5rem);
+  font-weight:700;
+  color:#fff;
+  margin-bottom:0.5rem;
+}
+
+.siswa-grid{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:16px;
+  perspective: 1000px;
+}
+
+.siswa-card{
+  aspect-ratio:3/4;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  position:relative;
+  cursor:pointer;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, box-shadow 0.4s ease;
+  opacity:0;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.siswa-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.siswa-card:hover::before { opacity: 1; }
+
+/* Holographic Scanline */
+.siswa-card::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0; width: 100%; height: 200%;
+  background: linear-gradient(
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.03) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+.siswa-card:hover::after {
+  animation: scanline 3s linear infinite;
+}
+
+@keyframes scanline {
+  from { transform: translateY(0); }
+  to { transform: translateY(50%); }
+}
+
+.siswa-card.visible-active{
+  opacity:1;
+  transform:translateX(0) !important;
+}
+
+.siswa-card:hover{
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px var(--g1);
+  border-color: var(--g1);
+}
+
+.siswa-avatar{
+  width:100%;height:70%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-size: cover;
+  background-position: center;
+  position:relative;
+  overflow:hidden;
+}
+
+.siswa-avatar::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--glass);
+}
+
+.siswa-info{
+  padding:12px;
+  height:30%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.siswa-name{
+  font-size:0.78rem;
+  font-weight:500;
+  color:#fff;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.siswa-no{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.35);
+  margin-top:2px;
+}
+
+.siswa-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  opacity:0;
+  transition:opacity 0.25s ease;
+  backdrop-filter:blur(4px);
+}
+
+.siswa-card:hover .siswa-overlay{opacity:1;}
+
+.cek-detail{
+  font-family:'Space Mono',monospace;
+  font-size:0.75rem;
+  letter-spacing:0.15em;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  padding:6px 14px;
+  border-radius:100px;
+}
+
+.plus-icon{
+  font-size:1.5rem;
+  color:rgba(255,255,255,0.5);
+}
+
+/* ─── MODAL ─── */
+.modal-backdrop{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(12px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+}
+
+.modal-backdrop.open{display:flex;}
+
+.modal-box{
+  background:#0d0d0d;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:24px;
+  padding:2rem;
+  max-width:360px;
+  width:100%;
+  position:relative;
+  animation:modalIn 0.3s ease;
+}
+
+@keyframes modalIn{
+  from{transform:scale(0.9);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+.modal-close{
+  position:absolute;
+  top:1rem;right:1rem;
+  background:none;
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;
+  width:32px;height:32px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.modal-avatar{
+  width:90px;height:90px;
+  border-radius:50%;
+  background-size: cover;
+  background-position: center;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1rem;
+  border:2px solid rgba(255,255,255,0.12);
+}
+
+.modal-name{
+  text-align:center;
+  font-size:1.1rem;
+  font-weight:600;
+  margin-bottom:0.25rem;
+}
+
+.modal-details{
+  margin-top:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.modal-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  background:rgba(255,255,255,0.04);
+  border-radius:10px;
+  font-size:0.82rem;
+}
+
+.modal-row-label{color:rgba(255,255,255,0.4);}
+.modal-row-val{color:#fff;font-weight:500;}
+
+/* ─── TAGS / VOTING ─── */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.2rem;
+  justify-content: center;
+}
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  background: rgba(168, 216, 255, 0.1);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: tagFloat 3s ease-in-out infinite;
+  animation-delay: var(--tdelay, 0s);
+}
+@keyframes tagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ─── FOTO GANTUNGAN ─── */
+#gallery-section{
+  background:#000;
+  padding:6rem 2rem;
+  overflow:hidden;
+}
+
+.clothesline{
+  position:relative;
+  max-width:1100px;
+  margin:0 auto;
+  height:320px;
+  perspective: 2000px;
+}
+
+.line{
+  position:absolute;
+  top:40px;
+  left:-20px;right:-20px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),rgba(255,255,255,0.3),rgba(255,255,255,0.2),transparent);
+}
+
+.polaroid-wrap{
+  position:absolute;
+  top:20px;
+  cursor:grab;
+  user-select:none;
+  transform-origin:top center;
+  touch-action:none;
+  transform-style: preserve-3d;
+}
+
+.polaroid-wrap:active{cursor:grabbing;}
+
+.polaroid-clip{
+  width:10px;height:14px;
+  background:#c8a96e;
+  border-radius:2px 2px 0 0;
+  margin:0 auto;
+  position:relative;
+  z-index:2;
+  box-shadow:0 0 6px rgba(200,169,110,0.4);
+}
+
+.polaroid{
+  background:#f5f0e8;
+  padding:10px 10px 28px;
+  border-radius:4px;
+  width:140px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.1);
+  transform:rotate(var(--rot,0deg));
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.polaroid-img{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:2px;
+  background-size: cover;
+  background-position: center;
+  overflow:hidden;
+}
+
+.polaroid-caption{
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.55rem;
+  color:#555;
+  margin-top:6px;
+  letter-spacing:0.05em;
+}
+
+/* ─── ALBUM GRID ─── */
+#album-section{
+  background:#000;
+  padding:4rem 2rem 6rem;
+}
+
+/* ─── POLAROID ANIMATIONS ─── */
+.polaroid-wrap {
+  opacity: 0;
+  transform: translateY(30px) rotate(0deg);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.polaroid-wrap.reveal {
+  opacity: 1 !important;
+  transform: translateY(0) rotate(var(--rot, 0deg)) !important;
+}
+
+.polaroid-wrap.swinging {
+  animation: polaroid-swing 4s ease-in-out infinite alternate;
+  animation-delay: var(--sdelay, 0s);
+}
+
+.polaroid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.polaroid.flash::after {
+  animation: camera-flash 0.8s ease-out forwards;
+}
+
+@keyframes camera-flash {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes polaroid-swing {
+  0% { transform: translateY(0) rotate(calc(var(--rot, 0deg) - 2deg)); }
+  100% { transform: translateY(0) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+
+/* ─── ALBUM CAROUSEL ─── */
+.album-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.album-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 20px 0;
+  scrollbar-width: none;
+}
+
+.album-carousel::-webkit-scrollbar { display: none; }
+
+.album-item {
+  flex: 0 0 280px;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.album-item:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+}
+
+.album-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.album-nav:hover { background: var(--accent); color: #000; }
+.album-nav.prev { left: -22px; }
+.album-nav.next { right: -22px; }
+
+/* ─── LIGHTBOX ─── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+  backdrop-filter: blur(12px);
+}
+
+.lightbox.open { display: flex; animation: fadeIn 0.3s ease; }
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 20px;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15rem;
+  background: rgba(255,255,255,0.03);
+  width: 500px; height: 500px;
+}
+
+.lightbox.open .lightbox-content { transform: scale(1); }
+
+@media(max-width:600px){
+  .album-item { flex: 0 0 240px; }
+  .album-nav { display: none; }
+  .lightbox-content { width: 300px; height: 300px; font-size: 8rem; }
+}
+
+section, footer {
+  transition: filter 0.5s ease, opacity 0.5s ease;
+  will-change: filter, opacity;
+}
+
+/* ─── VISUALIZER & SPOTIFY ─── */
+#audio-visualizer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.spotify-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  max-width: 80vw;
+  z-index: 9999;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease 1s;
+}
+
+.spotify-container.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media(max-width:600px){
+  .spotify-container {
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    width: 260px;
+  }
+}
+
+/* ─── FOOTER ─── */
+#footer{
+  background:#000;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:6rem 2rem 4rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.ig-handle{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.2rem,4vw,2.2rem);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:0.05em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+
+.ig-icon{
+  width:36px;height:36px;
+  border:1.5px solid rgba(255,255,255,0.3);
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+}
+
+.footer-sub{
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  margin-top:2rem;
+  font-family:'Space Mono',monospace;
+}
+
+/* ─── SCROLL FADE ─── */
+.fade-up{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:600px){
+  .wali-card{flex-direction:column;gap:1.5rem;}
+  .wali-photo{width:120px;height:150px;}
+  .siswa-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
+  .album-grid{grid-template-columns:repeat(2,1fr);}
+  .album-item:first-child,.album-item:nth-child(5){grid-column:span 1;aspect-ratio:1;}
+  .clothesline{height:280px;}
+  .polaroid{width:110px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-year" id="heroText">XII.8</div>
+    <div class="hero-sub" id="heroSub"></div>
+  </div>
+
+  <div class="scroll-hint" onclick="document.getElementById('marquee-section').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<section id="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-inner" id="m1"></div>
+    <div class="marquee-inner" id="m1b"></div>
+  </div>
+  <div class="marquee-track" style="margin-top:0.5rem;">
+    <div class="marquee-inner reverse" id="m2"></div>
+    <div class="marquee-inner reverse" id="m2b"></div>
+  </div>
+</section>
+
+<!-- ═══ WALI KELAS ═══ -->
+<section style="background:#000;padding:5rem 2rem 2rem;position:relative;" id="waliSection">
+  <div class="wali-spotlight" id="waliSpotlight"></div>
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label fade-up">— Wali Kelas</div>
+  </div>
+  <div id="wali-kelas">
+    <div class="wali-card" id="waliCard">
+      <!-- Decorative HUD -->
+      <div class="hud-tag" style="top:-12px; left:30px;">[ STATUS: ACTIVE ]</div>
+      <div class="hud-tag" style="top:-12px; right:30px;">[ LEVEL: ADMIN ]</div>
+      <div class="hud-tag" style="bottom:-12px; left:50%; transform:translateX(-50%);">[ ID: WK_XII8 ]</div>
+
+      <div class="wali-photo">👩‍🏫</div>
+      <div class="wali-info">
+        <div class="wali-quote" id="waliQuote"></div>
+        <div class="wali-name">Bpk/Ibu [Nama Wali Kelas]</div>
+        <div class="wali-role">Wali Kelas XII.8 • SMANSAKA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SISWA ═══ -->
+<section id="siswa-section">
+  <div class="section-header fade-up">
+    <div class="section-label">— Anggota Kelas</div>
+    <div class="section-title">34 Wajah, Satu Cerita.</div>
+  </div>
+  <div class="siswa-grid" id="siswaGrid"></div>
+</section>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-backdrop" id="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+    <div class="modal-avatar" id="mAvatar"></div>
+    <div class="modal-name" id="mName"></div>
+    <div style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;" id="mNo"></div>
+    <div class="modal-details" id="mDetails"></div>
+  </div>
+</div>
+
+<!-- ═══ FOTO GANTUNGAN ═══ -->
+<section id="gallery-section">
+  <div style="max-width:1100px;margin:0 auto 3rem;">
+    <div class="section-label fade-up">— Momen Bersama</div>
+    <div class="section-title fade-up" style="font-family:'Space Mono',monospace;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;">Kenangan yang Menggantung</div>
+  </div>
+  <div class="clothesline" id="clothesline">
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ═══ ALBUM ═══ -->
+<section id="album-section">
+  <div style="max-width:900px;margin:0 auto 2rem;">
+    <div class="section-label fade-up">— Album Kelas</div>
+  <div class="album-container">
+    <button class="album-nav prev" onclick="moveAlbum(-1)">❮</button>
+    <button class="album-nav next" onclick="moveAlbum(1)">❯</button>
+    <div class="album-carousel" id="albumGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <canvas id="audio-visualizer"></canvas>
+
+  <div class="ig-handle fade-up">
+    <div class="ig-icon">📸</div>
+    <!-- ✏️ GANTI: Username Instagram kelas -->
+    @XII.8_SMANSAKA
+  </div>
+  <div class="fade-up" style="font-size:0.85rem;color:rgba(255,255,255,0.3);margin-top:0.5rem;">Follow kita di Instagram</div>
+  <div class="footer-sub fade-up">XII.8 • SMANSAKA • 2024/2025</div>
+</footer>
+
+<!-- ═══ SPOTIFY PLAYER (Moved out of footer to stay sharp) ═══ -->
+<div class="spotify-container" id="spotifyPlayer">
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4r4bvzuNI2OAGQjdGSlxnD?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
+<script>
+/* ─── PARTICLES ─── */
+const pContainer=document.getElementById('particles');
+for(let i=0;i<80;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;opacity:${Math.random()*0.5};width:${Math.random()<0.3?2:1}px;height:${Math.random()<0.3?2:1}px;`;
+  pContainer.appendChild(p);
+}
+
+/* ─── HERO TYPING ─── */
+const subtitles=['SMANSAKA','Angkatan 2025','34 Jiwa Satu Hati','Kenangan Abadi'];
+let si=0,ci=0,deleting=false,pause=0;
+const el=document.getElementById('heroSub');
+function typeLoop(){
+  if(pause>0){pause--;setTimeout(typeLoop,50);return;}
+  const word=subtitles[si];
+  if(!deleting){
+    el.textContent=word.slice(0,++ci);
+    if(ci===word.length){deleting=true;pause=40;}
+  }else{
+    el.textContent=word.slice(0,--ci);
+    if(ci===0){deleting=false;si=(si+1)%subtitles.length;pause=10;}
+  }
+  setTimeout(typeLoop,deleting?60:90);
+}
+setTimeout(typeLoop,1000);
+
+/* ─── MARQUEE ─── */
+const repeat=10;
+['m1','m1b'].forEach(id=>{
+  for(let i=0;i<repeat;i++){
+    const s=document.createElement('span');
+    s.className='marquee-text'+(i%3===1?' accent':'');
+    s.textContent='XII.8 SMANSAKA • ';
+    document.getElementById(id).appendChild(s);
+  }
+});
+['m2','m2b'].forEach(id=>{
+  for(let i=0;i<repeat;i++){
+    const s=document.createElement('span');
+    s.className='marquee-text'+(i%2===0?' accent':'');
+    s.textContent='SMANSAKA • XII.8 • ';
+    document.getElementById(id).appendChild(s);
+  }
+});
+
+/* ─── WALI KELAS QUOTE TYPING ─── */
+/* ✏️ GANTI: Quote dari wali kelas */
+const quote='"Ilmu tanpa akhlak adalah kosong, akhlak tanpa ilmu adalah buta."';
+let qi=0;
+const qEl=document.getElementById('waliQuote');
+function typeQuote(){
+  if(qi<=quote.length){
+    qEl.textContent=quote.slice(0,qi++);
+    setTimeout(typeQuote,35);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   ✏️  DATA SISWA — EDIT BAGIAN INI SESUAI DATA ASLI
+   ══════════════════════════════════════════════════════ */
+const emojis=['😊','🌟','🎯','🚀','💡','🎨','🏆','✨','🌙','🔥','🌈','⚡','🎭','🌺','🦋','🍀','�/* ✏️ MASUKKAN: Data lengkap 34 siswa di sini (Absen 01-34) */
+const students = [
+  { no:'01', name:'Siswa 1',  img:'MURID/IMG-20260408-WA0011.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007',  hobi:'Olahraga & Musik', cita:'Insinyur',    motto:'Terus Maju!', tags:['Ter-gaming', 'Ter-linux'] },
+  { no:'02', name:'Siswa 2',  img:'MURID/IMG-20260408-WA0012.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007',  hobi:'Membaca',          cita:'Dokter',      motto:'Semangat!', tags:['Ter-update'] },
+  { no:'03', name:'Siswa 3',  img:'MURID/IMG-20260408-WA0013.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Bandung, 2007',  hobi:'Gaming',           cita:'Programmer',  motto:'No Pain No Gain', tags:['Ter-gaming'] },
+  { no:'04', name:'Siswa 4',  img:'MURID/IMG-20260408-WA0014.jpg', g1:colors[3][0], g2:colors[3][1], ttl:'Bogor, 2007',    hobi:'Memasak',          cita:'Chef',        motto:'Ayo Bisa!' },
+  { no:'05', name:'Siswa 5',  img:'MURID/IMG-20260408-WA0015.jpg', g1:colors[4][0], g2:colors[4][1], ttl:'Jakarta, 2007',  hobi:'Melukis',          cita:'Arsitek',     motto:'Kreatif Selalu' },
+  { no:'06', name:'Siswa 6',  img:'MURID/IMG-20260408-WA0016.jpg', g1:colors[5][0], g2:colors[5][1], ttl:'Depok, 2007',    hobi:'Fotografi',        cita:'Jurnalis',    motto:'Hidup Itu Indah' },
+  { no:'07', name:'Siswa 7',  img:'MURID/IMG-20260408-WA0017.jpg', g1:colors[6][0], g2:colors[6][1], ttl:'Bekasi, 2007',   hobi:'Basket',           cita:'Atlet',       motto:'Pantang Menyerah' },
+  { no:'08', name:'Siswa 8',  img:'MURID/IMG-20260408-WA0018.jpg', g1:colors[7][0], g2:colors[7][1], ttl:'Jakarta, 2007',  hobi:'Menulis',          cita:'Penulis',     motto:'Kata Adalah Senjata' },
+  { no:'09', name:'Siswa 9',  img:'MURID/IMG-20260408-WA0019.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Tangerang, 2007',hobi:'Musik',            cita:'Musisi',      motto:'Hidup Adalah Musik' },
+  { no:'10', name:'Siswa 10', img:'MURID/IMG-20260408-WA0020.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007',  hobi:'Renang',           cita:'Perenang',    motto:'Keep Swimming' },
+  { no:'11', name:'Siswa 11', img:'MURID/IMG-20260408-WA0021.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Bogor, 2007',    hobi:'Hiking',           cita:'Peneliti',    motto:'Alam Adalah Guru' },
+  { no:'12', name:'Siswa 12', img:'MURID/IMG-20260408-WA0022.jpg', g1:colors[3][0], g2:colors[3][1], ttl:'Jakarta, 2007',  hobi:'Debat',            cita:'Pengacara',   motto:'Kebenaran Di Atas Segalanya' },
+  { no:'13', name:'Siswa 13', img:'MURID/IMG-20260408-WA0023.jpg', g1:colors[4][0], g2:colors[4][1], ttl:'Depok, 2007',    hobi:'Drama',            cita:'Aktor',       motto:'Show Must Go On' },
+  { no:'14', name:'Siswa 14', img:'MURID/IMG-20260408-WA0024.jpg', g1:colors[5][0], g2:colors[5][1], ttl:'Bekasi, 2007',   hobi:'Berkebun',         cita:'Botanis',     motto:'Tumbuh Bersama' },
+  { no:'15', name:'Siswa 15', img:'MURID/IMG-20260408-WA0025.jpg', g1:colors[6][0], g2:colors[6][1], ttl:'Jakarta, 2007',  hobi:'Merajut',          cita:'Desainer',    motto:'Detail Itu Penting' },
+  { no:'16', name:'Siswa 16', img:'MURID/IMG-20260408-WA0026.jpg', g1:colors[7][0], g2:colors[7][1], ttl:'Tangerang, 2007',hobi:'Volunteer',        cita:'Aktivis',     motto:'Beri Lebih, Ambil Sedikit' },
+  { no:'17', name:'Siswa 17', img:'MURID/IMG-20260408-WA0027.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007',  hobi:'Badminton',        cita:'Pengusaha',   motto:'Kerja Keras Itu Kunci' },
+  { no:'18', name:'Siswa 18', img:'MURID/IMG-20260408-WA0028.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Bogor, 2007',    hobi:'Menyanyi',         cita:'Penyanyi',    motto:'Suara Adalah Anugerah' },
+  { no:'19', name:'Siswa 19', img:'MURID/IMG-20260408-WA0029.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007',  hobi:'Coding',           cita:'Developer',   motto:'Code The Future' },
+  { no:'20', name:'Siswa 20', img:'MURID/IMG-20260408-WA0030.jpg', g1:colors[3][0], g2:colors[3][1], ttl:'Depok, 2007',    hobi:'Menari',           cita:'Koreografer', motto:'Gerak Adalah Bahasa' },
+  { no:'21', name:'Siswa 21', img:'MURID/IMG-20260408-WA0031.jpg', g1:colors[4][0], g2:colors[4][1], ttl:'Bekasi, 2007',   hobi:'Bulu Tangkis',     cita:'Pelatih',     motto:'Latihan Buat Sempurna' },
+  { no:'22', name:'Siswa 22', img:'MURID/IMG-20260408-WA0032.jpg', g1:colors[5][0], g2:colors[5][1], ttl:'Jakarta, 2007',  hobi:'Sketsa',           cita:'Ilustrator',  motto:'Imajinasi Tanpa Batas' },
+  { no:'23', name:'Siswa 23', img:'MURID/IMG-20260408-WA0033.jpg', g1:colors[6][0], g2:colors[6][1], ttl:'Tangerang, 2007',hobi:'Robotik',          cita:'Insinyur',    motto:'Inovasi Tiada Henti' },
+  { no:'24', name:'Siswa 24', img:'MURID/IMG-20260408-WA0034.jpg', g1:colors[7][0], g2:colors[7][1], ttl:'Jakarta, 2007',  hobi:'Astronomi',        cita:'Astronom',    motto:'Reach For The Stars' },
+  { no:'25', name:'Siswa 25', img:'MURID/IMG-20260408-WA0035.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Bogor, 2007',    hobi:'Bermain Catur',    cita:'Analis',      motto:'Berpikir Sebelum Bergerak' },
+  { no:'26', name:'Siswa 26', img:'MURID/IMG-20260408-WA0036.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Depok, 2007',    hobi:'Kuliner',          cita:'Food Blogger',motto:'Makan Untuk Hidup' },
+  { no:'27', name:'Siswa 27', img:'MURID/IMG-20260408-WA0037.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007',  hobi:'Gitar',            cita:'Komposer',    motto:'Musik Menyatukan Kita' },
+  { no:'28', name:'Siswa 28', img:'MURID/IMG-20260408-WA0038.jpg', g1:colors[3][0], g2:colors[3][1], ttl:'Bekasi, 2007',   hobi:'Traveling',        cita:'Tour Guide',  motto:'Jelajahi Dunia' },
+  { no:'29', name:'Siswa 29', img:'MURID/IMG-20260408-WA0039.jpg', g1:colors[4][0], g2:colors[4][1], ttl:'Jakarta, 2007',  hobi:'Vlog',             cita:'YouTuber',    motto:'Create, Share, Inspire' },
+  { no:'30', name:'Siswa 30', img:'MURID/IMG-20260408-WA0040.jpg', g1:colors[5][0], g2:colors[5][1], ttl:'Tangerang, 2007',hobi:'Yoga',             cita:'Terapis',     motto:'Sehat Itu Segalanya' },
+  { no:'31', name:'Siswa 31', img:'MURID/IMG-20260408-WA0041.jpg', g1:colors[6][0], g2:colors[6][1], ttl:'Jakarta, 2007',  hobi:'Origami',          cita:'Seniman',     motto:'Seni Ada Di Mana-mana' },
+  { no:'32', name:'Siswa 32', img:'MURID/IMG-20260408-WA0042.jpg', g1:colors[7][0], g2:colors[7][1], ttl:'Bogor, 2007',    hobi:'Sepak Bola',       cita:'Pelatih',     motto:'Tim Di Atas Segalanya' },
+  { no:'33', name:'Siswa 33', img:'MURID/IMG-20260408-WA0043.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Depok, 2007',    hobi:'Berkuda',          cita:'Veteriner',   motto:'Cintai Semua Makhluk' },
+  { no:'34', name:'Siswa 34', img:'MURID/IMG-20260408-WA0044.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007',  hobi:'Meditasi',         cita:'Psikolog',    motto:'Damai Dalam Jiwa' },
+];
+', name:'Siswa 26', emoji:emojis[25], g1:colors[1][0], g2:colors[1][1], ttl:'Depok, 2007',    hobi:'Kuliner',          cita:'Food Blogger',motto:'Makan Untuk Hidup' },
+  { no:'27', name:'Siswa 27', emoji:emojis[26], g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007',  hobi:'Gitar',            cita:'Komposer',    motto:'Musik Menyatukan Kita' },
+  { no:'28', name:'Siswa 28', emoji:emojis[27], g1:colors[3][0], g2:colors[3][1], ttl:'Bekasi, 2007',   hobi:'Traveling',        cita:'Tour Guide',  motto:'Jelajahi Dunia' },
+  { no:'29', name:'Siswa 29', emoji:emojis[28], g1:colors[4][0], g2:colors[4][1], ttl:'Jakarta, 2007',  hobi:'Vlog',             cita:'YouTuber',    motto:'Create, Share, Inspire' },
+  { no:'30', name:'Siswa 30', emoji:emojis[29], g1:colors[5][0], g2:colors[5][1], ttl:'Tangerang, 2007',hobi:'Yoga',             cita:'Terapis',     motto:'Sehat Itu Segalanya' },
+  { no:'31', name:'Siswa 31', emoji:emojis[30], g1:colors[6][0], g2:colors[6][1], ttl:'Jakarta, 2007',  hobi:'Origami',          cita:'Seniman',     motto:'Seni Ada Di Mana-mana' },
+  { no:'32', name:'Siswa 32', emoji:emojis[31], g1:colors[7][0], g2:colors[7][1], ttl:'Bogor, 2007',    hobi:'Sepak Bola',       cita:'Pelatih',     motto:'Tim Di Atas Segalanya' },
+  { no:'33', name:'Siswa 33', emoji:emojis[32], g1:colors[0][0], g2:colors[0][1], ttl:'Depok, 2007',    hobi:'Berkuda',          cita:'Veteriner',   motto:'Cintai Semua Makhluk' },
+  { no:'34', name:'Siswa 34', emoji:emojis[33], g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007',  hobi:'Meditasi',         cita:'Psikolog',    motto:'Damai Dalam Jiwa' },
+];
+/* ══════════════════════════════════════════════════════ */
+
+const grid=document.getElementById('siswaGrid');
+students.forEach((s,i)=>{
+  const card=document.createElement('div');
+  card.className='siswa-card';
+  card.style.transitionDelay=`${(i%8)*0.05}s`;
+  card.style.setProperty('--g1', s.g1);
+  card.style.setProperty('--g2', s.g2);
+  
+  card.innerHTML=`
+    <div class="siswa-avatar" style="background-image:url('${s.img}');"></div>
+    <div class="siswa-info">
+      <div class="siswa-no">#${s.no}</div>
+      <div class="siswa-name">${s.name}</div>
+    </div>
+    <div class="siswa-overlay">
+      <div class="plus-icon">+</div>
+      <div class="cek-detail">LIHAT DATA</div>
+    </div>`;
+
+  // 3D Tilt Logic for Cards
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotX = ((y - centerY) / centerY) * -12;
+    const rotY = ((x - centerX) / centerX) * 12;
+    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.05)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+
+  card.addEventListener('click',()=>openModal(s));
+  grid.appendChild(card);
+});
+
+function openModal(s){
+  document.getElementById('mAvatar').style.backgroundImage = `url('${s.img}')`;
+  document.getElementById('mName').textContent=s.name;
+  document.getElementById('mNo').textContent=`No. Absen #${s.no}`;
+  
+  let detailsHtml = `
+    <div class="modal-row"><span class="modal-row-label">TTL</span><span class="modal-row-val">${s.ttl}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Hobi</span><span class="modal-row-val">${s.hobi}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Cita-cita</span><span class="modal-row-val">${s.cita}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Motto</span><span class="modal-row-val">${s.motto}</span></div>
+  `;
+
+  if(s.tags && s.tags.length > 0) {
+    detailsHtml += `<div class="tag-container">` + 
+      s.tags.map((t, idx) => `<span class="tag" style="--tdelay:${idx*0.2}s">${t}</span>`).join('') + 
+      `</div>`;
+  }
+  
+  document.getElementById('mDetails').innerHTML = detailsHtml;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+
+/* ─── POLAROID DRAGGABLE ─── */
+const photos=[
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0063.jpg',caption:'Momen 1',rot:-4},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0066.jpg',caption:'Momen 2',rot:2},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0098.jpg',caption:'Momen 3',rot:-2},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0100.jpg',caption:'Momen 4',rot:5},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0111.jpg',caption:'Momen 5',rot:-3},
+];
+
+const cl=document.getElementById('clothesline');
+const clW=Math.min(window.innerWidth,1100);
+photos.forEach((ph,i)=>{
+  const wrap=document.createElement('div');
+  wrap.className='polaroid-wrap';
+  const left=60+i*(clW-200)/4;
+  wrap.innerHTML=`
+    <div class="polaroid-clip"></div>
+    <div class="polaroid" style="--rot:${ph.rot}deg;">
+      <div class="polaroid-img" style="background-image:url('${ph.img}');"></div>
+      <div class="polaroid-caption">${ph.caption}</div>
+    </div>`;
+  wrap.style.setProperty('--sdelay', `${i * 0.5}s`);
+  wrap.style.setProperty('--rot', `${ph.rot}deg`);
+  wrap.style.left = left + 'px';
+  wrap.style.top = '20px';
+
+  const polaroid = wrap.querySelector('.polaroid');
+
+  // 3D Tilt Logic
+  wrap.addEventListener('mousemove', e => {
+    if (dragging) return;
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg
+    const rotateY = ((x - centerX) / centerX) * 15;
+    polaroid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(var(--rot)) scale(1.05)`;
+  });
+
+  wrap.addEventListener('mouseleave', () => {
+    polaroid.style.transform = '';
+  });
+
+  let dragging=false,startX=0,startY=0,origLeft=left,origTop=20,curX=left,curY=20,swingAngle=0;
+
+  function getXY(e){
+    if(e.touches)return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+    return{x:e.clientX,y:e.clientY};
+  }
+
+  wrap.addEventListener('mousedown',e=>{dragging=true;const{x,y}=getXY(e);startX=x-curX;startY=y-curY;wrap.style.zIndex=100;e.preventDefault();});
+  wrap.addEventListener('touchstart',e=>{dragging=true;const{x,y}=getXY(e);startX=x-curX;startY=y-curY;wrap.style.zIndex=100;},{passive:true});
+
+  function onMove(e){
+    if(!dragging)return;
+    const{x,y}=getXY(e);
+    curX=x-startX;curY=y-startY;
+    swingAngle=(curX-origLeft)*0.05;
+    wrap.style.left=curX+'px';
+    wrap.style.top=curY+'px';
+    wrap.style.transform=`rotate(${swingAngle}deg)`;
+  }
+
+  function onUp(){
+    if(!dragging)return;
+    dragging=false;
+    wrap.style.zIndex='';
+    const spring=setInterval(()=>{
+      curX+=(origLeft-curX)*0.15;
+      curY+=(origTop-curY)*0.15;
+      swingAngle*=0.8;
+      wrap.style.left=curX+'px';
+      wrap.style.top=curY+'px';
+      wrap.style.transform=`rotate(${swingAngle}deg)`;
+      if(Math.abs(curX-origLeft)<0.5&&Math.abs(curY-origTop)<0.5){
+        curX=origLeft;curY=origTop;
+        wrap.style.left=origLeft+'px';
+        wrap.style.top=origTop+'px';
+        wrap.style.transform='';
+        clearInterval(spring);
+      }
+    },16);
+  }
+
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
+  document.addEventListener('touchmove',onMove,{passive:true});
+  document.addEventListener('touchend',onUp);
+
+  cl.appendChild(wrap);
+});
+
+/* ─── ALBUM CAROUSEL Logic ─── */
+const albumPhotos=[
+  'ALBUM KELAS/IMG-20260408-WA0056.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0059.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0062.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0101.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0102.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0112.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0115.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0118.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0120.jpg'
+];
+const ag=document.getElementById('albumGrid');
+
+albumPhotos.forEach((img,i)=>{
+  const item=document.createElement('div');
+  item.className='album-item';
+  item.style.backgroundImage=`url('${img}')`;
+  item.onclick = () => openAlbumLightbox(img);
+  ag.appendChild(item);
+});
+
+function openAlbumLightbox(img) {
+  const lb = document.getElementById('lightbox');
+  const lbC = document.getElementById('lightboxContent');
+  lbC.textContent = '';
+  lbC.style.backgroundImage = `url('${img}')`;
+  lbC.style.backgroundSize = 'contain';
+  lbC.style.backgroundRepeat = 'no-repeat';
+  lbC.style.backgroundPosition = 'center';
+  lb.classList.add('open');
+}
+
+let albumInterval;
+function startAlbumAutoPlay() {
+  clearInterval(albumInterval);
+  albumInterval = setInterval(() => moveAlbum(1), 3000);
+}
+
+function moveAlbum(dir) {
+  const maxScroll = ag.scrollWidth - ag.clientWidth;
+  if (dir === 1 && ag.scrollLeft >= maxScroll - 10) {
+    ag.scrollTo({ left: 0, behavior: 'smooth' });
+  } else if (dir === -1 && ag.scrollLeft <= 10) {
+    ag.scrollTo({ left: maxScroll, behavior: 'smooth' });
+  } else {
+    ag.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  }
+  startAlbumAutoPlay(); // Reset timer on manual move
+}
+startAlbumAutoPlay();
+
+/* ─── LIGHTBOX Logic ─── */
+function openLightbox(content, bg) {
+  const lb = document.getElementById('lightbox');
+  const lbC = document.getElementById('lightboxContent');
+  lbC.textContent = content;
+  lbC.style.background = bg;
+  lb.classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+/* ─── INTERSECTION OBSERVER ─── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.classList.add('visible');
+      if(en.target.id==='waliCard')setTimeout(typeQuote,400);
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.fade-up,.wali-card').forEach(el=>io.observe(el));
+io.observe(document.getElementById('spotifyPlayer'));
+
+/* ─── DIRECTION-AWARE STUDENT CARDS ─── */
+let isScrollingDown = true;
+let lastSiswaY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+  const currentY = window.scrollY;
+  if (Math.abs(currentY - lastSiswaY) > 5) {
+    isScrollingDown = currentY > lastSiswaY;
+    lastSiswaY = currentY;
+  }
+}, { passive: true });
+
+const cardObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting) {
+      if(!en.target.classList.contains('visible-active')) {
+        // Prepare starting point
+        en.target.style.transform = isScrollingDown ? 'translateX(-80px)' : 'translateX(80px)';
+        en.target.style.opacity = '0';
+        en.target.style.transition = 'none'; // Disable transition for instant snap
+        
+        // Force reflow
+        en.target.offsetHeight; 
+        
+        // Start animation
+        requestAnimationFrame(() => {
+          en.target.style.transition = ''; // Restore transition
+          en.target.classList.add('visible-active');
+          // Clear inline styles so they don't block CSS
+          en.target.style.transform = '';
+          en.target.style.opacity = '';
+        });
+      }
+    } else {
+      en.target.classList.remove('visible-active');
+    }
+  });
+},{threshold: 0.1});
+document.querySelectorAll('.siswa-card').forEach(c=>cardObs.observe(c));
+
+/* ─── GALLERY SEQUENTIAL ANIMATION ─── */
+const galleryObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const wraps = en.target.querySelectorAll('.polaroid-wrap');
+      wraps.forEach((w, idx) => {
+        setTimeout(() => {
+          w.classList.add('reveal');
+          const p = w.querySelector('.polaroid');
+          p.classList.add('flash');
+          // Start passive swing after it settles
+          setTimeout(() => { 
+            if(w.classList.contains('reveal')) {
+              w.classList.add('swinging');
+              p.classList.remove('flash');
+            }
+          }, 1000);
+        }, idx * 400);
+      });
+    } else {
+      en.target.querySelectorAll('.polaroid-wrap').forEach(w => {
+        w.classList.remove('reveal', 'swinging');
+      });
+    }
+  });
+}, { threshold: 0.2 });
+galleryObs.observe(document.getElementById('clothesline'));
+
+/* ─── HERO PARALLAX ─── */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  const hero=document.getElementById('heroText');
+  if(y<window.innerHeight){
+    hero.style.transform=`translateY(${y*0.3}px)`;
+    hero.style.opacity=1-y/400;
+  }
+});
+
+/* ─── AMBIENT VISUALIZER ─── */
+const canvas = document.getElementById('audio-visualizer');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+
+function resizeVisualizer() {
+  cw = canvas.width = window.innerWidth;
+  ch = canvas.height = 120;
+}
+window.addEventListener('resize', resizeVisualizer);
+resizeVisualizer();
+
+let vTime = 0;
+function animateVisualizer() {
+  ctx.clearRect(0, 0, cw, ch);
+  vTime += 0.015;
+  
+  const bars = 80;
+  const barGap = 2;
+  const barWidth = (cw / bars) - barGap;
+  
+  for(let i=0; i<bars; i++) {
+    const hue = 200 + Math.sin(vTime + i*0.05) * 20;
+    // Procedural movement simulating audio frequencies
+    const slow = Math.sin(vTime + i * 0.15) * 25;
+    const fast = Math.sin(vTime * 2.5 + i * 0.4) * 10;
+    const peak = Math.random() < 0.05 ? Math.random() * 20 : 0; // Random peaks
+    
+    const height = 15 + Math.abs(slow + fast) + peak;
+    
+    ctx.fillStyle = `hsla(${hue}, 100%, 70%, 0.3)`;
+    ctx.fillRect(i * (cw/bars), ch, barWidth, -height);
+    
+    // Glossy top
+    ctx.fillStyle = `hsla(${hue}, 100%, 80%, 0.6)`;
+    ctx.fillRect(i * (cw/bars), ch - height, barWidth, 2);
+  }
+  requestAnimationFrame(animateVisualizer);
+}
+animateVisualizer();
+
+/* ─── WALI KELAS Logic ─── */
+const wSec = document.getElementById('waliSection');
+const wSpot = document.getElementById('waliSpotlight');
+const wCard = document.getElementById('waliCard');
+
+wSec.addEventListener('mousemove', e => {
+  const rect = wSec.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  wSpot.style.setProperty('--x', x + '%');
+  wSpot.style.setProperty('--y', y + '%');
+
+  // 3D Tilt
+  const cRect = wCard.getBoundingClientRect();
+  const cx = e.clientX - cRect.left;
+  const cy = e.clientY - cRect.top;
+  const rx = ((cy - cRect.height/2) / (cRect.height/2)) * -8;
+  const ry = ((cx - cRect.width/2) / (cRect.width/2)) * 8;
+  wCard.style.transform = `perspective(1500px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+});
+
+wSec.addEventListener('mouseleave', () => {
+  wCard.style.transform = '';
+});
+
+const qText = "\"Pendidikan adalah senjata paling ampuh untuk merubah dunia. Mari kita jalin kebersamaan dan prestasi bersama XII.8.\"";
+let qCount = 0;
+function typeQuote(){
+  const target = document.getElementById('waliQuote');
+  if(qCount < qText.length){
+    target.innerHTML = qText.substring(0, qCount+1) + '<span class="cursor" style="opacity:1; border-left: 2px solid var(--accent); margin-left:2px; animation: blink 0.8s infinite;"></span>';
+    qCount++;
+    setTimeout(typeQuote, 40);
+  } else {
+    target.innerHTML = qText + '<span class="cursor" style="border-left: 2px solid var(--accent); margin-left:2px; animation: blink 0.8s infinite;"></span>';
+  }
+}
+
+/* ─── DYNAMIC SCROLL FOCUS ─── */
+const focusSections = document.querySelectorAll('section, footer, .wali-card');
+function updateScrollFocus() {
+  const vh = window.innerHeight;
+  const centerY = vh / 2;
+
+  focusSections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    const secCenter = rect.top + rect.height / 2;
+    const dist = Math.abs(centerY - secCenter);
+    
+    // Lower intensity and wider threshold for better visibility
+    const threshold = vh * 0.35; // Wider sharp zone
+    const maxDist = vh * 0.8;
+    
+    let intensity = 0;
+    if (dist > threshold) {
+      intensity = Math.min((dist - threshold) / (maxDist - threshold), 1);
+    }
+    
+    // Cap blur at 5px instead of 10px, and min opacity at 0.5
+    const blur = (intensity * 5).toFixed(1);
+    const opacity = (1 - intensity * 0.5).toFixed(2);
+    
+    sec.style.filter = `blur(${blur}px)`;
+    sec.style.opacity = opacity;
+  });
+}
+
+window.addEventListener('scroll', () => {
+  requestAnimationFrame(updateScrollFocus);
+});
+updateScrollFocus(); // Initial call
+</script>
+</body>
+</html>

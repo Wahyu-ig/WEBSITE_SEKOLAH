@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XII.8 — SMANSAKA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --black:#000;
+  --white:#fff;
+  --gray:#888;
+  --glass:rgba(255,255,255,0.06);
+  --glass-border:rgba(255,255,255,0.12);
+  --accent:#a8d8ff;
+  --accent2:#ffd4a8;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:#000;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ─── CUSTOM SCROLLBAR ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+/* ─── HERO ─── */
+#hero{
+  position:relative;
+  height:100vh;
+  min-height:600px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background-image: url('BACKGROUND/IMG-20260408-WA0068.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index:0;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(26,10,0,0.8) 0%, rgba(0,8,32,0.8) 40%, #000 85%);
+}
+
+.hero-bg::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(120,80,30,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 70% 60%, rgba(20,60,120,0.2) 0%, transparent 60%);
+}
+
+.hero-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.3;z-index:1;
+}
+
+.hero-particles{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+}
+
+.particle{
+  position:absolute;
+  width:1px;height:1px;
+  background:#fff;
+  border-radius:50%;
+  animation:twinkle var(--d,3s) var(--delay,0s) infinite ease-in-out;
+}
+
+@keyframes twinkle{
+  0%,100%{opacity:0.1;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(2);}
+}
+
+.hero-content{
+  position:relative;z-index:2;
+  text-align:center;
+}
+
+.hero-year{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(5rem,18vw,14rem);
+  font-weight:700;
+  letter-spacing:-0.02em;
+  line-height:1;
+  color:#fff;
+  position:relative;
+  display:inline-block;
+  /* Glitch Base */
+  text-shadow: 0.05em 0 0 rgba(255,0,255,0.75),
+              -0.025em -0.05em 0 rgba(0,255,255,0.75),
+               0.025em 0.05em 0 rgba(255,255,0,0.75);
+  animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 rgba(255,0,255,0.75), -0.025em -0.05em 0 rgba(0,255,255,0.75), 0.025em 0.05em 0 rgba(255,255,0,0.75);
+  }
+  2%, 5% {
+    text-shadow: -0.05em -0.025em 0 rgba(255,0,255,0.75), 0.025em 0.025em 0 rgba(0,255,255,0.75), -0.05em -0.05em 0 rgba(255,255,0,0.75);
+  }
+  8%, 10% {
+    text-shadow: 0.025em 0.05em 0 rgba(255,0,255,0.75), 0.05em 0 0 rgba(0,255,255,0.75), 0 -0.05em 0 rgba(255,255,0,0.75);
+  }
+  15%, 100% {
+    text-shadow: none;
+  }
+}
+
+.hero-year::after{
+  content:'|';
+  animation:blink 1s step-end infinite;
+  color:var(--accent);
+  margin-left:4px;
+}
+
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.hero-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(0.75rem,2vw,1rem);
+  font-weight:300;
+  letter-spacing:0.4em;
+  color:rgba(255,255,255,0.45);
+  text-transform:uppercase;
+  margin-top:1rem;
+}
+
+.scroll-hint{
+  position:absolute;
+  bottom:2.5rem;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+}
+
+.scroll-hint span{
+  font-size:0.65rem;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  font-family:'Space Mono',monospace;
+}
+
+.scroll-arrow{
+  width:20px;height:30px;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:10px;
+  position:relative;
+}
+
+.scroll-arrow::after{
+  content:'';
+  position:absolute;
+  top:6px;left:50%;
+  transform:translateX(-50%);
+  width:2px;height:8px;
+  background:#fff;
+  border-radius:2px;
+  animation:scrollDown 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollDown{
+  0%{transform:translateX(-50%) translateY(0);opacity:1;}
+  100%{transform:translateX(-50%) translateY(10px);opacity:0;}
+}
+
+/* ─── MARQUEE ─── */
+#marquee-section{
+  background:#000;
+  padding:3rem 0;
+  overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.marquee-track{
+  display:flex;
+  gap:0;
+  white-space:nowrap;
+  margin-bottom:1rem;
+}
+
+.marquee-track:last-child{margin-bottom:0;}
+
+.marquee-inner{
+  display:inline-flex;
+  gap:0;
+  animation:marqueeLeft 18s linear infinite;
+}
+
+.marquee-inner.reverse{
+  animation:marqueeRight 18s linear infinite;
+}
+
+@keyframes marqueeLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes marqueeRight{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+
+.marquee-text{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.2rem,3vw,2rem);
+  font-weight:700;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.15);
+  letter-spacing:0.1em;
+  padding:0 1.5rem;
+  white-space:nowrap;
+}
+
+.marquee-text.accent{
+  -webkit-text-stroke:1px var(--accent);
+  color:transparent;
+}
+
+#wali-kelas{
+  background:#000;
+  padding:10rem 2rem;
+  max-width:1000px;
+  margin:0 auto;
+  position:relative;
+  overflow:visible;
+}
+
+.wali-spotlight {
+  position: absolute;
+  inset: -100px;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(200, 169, 110, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wali-card{
+  display:flex;
+  gap:3rem;
+  align-items:center;
+  background:var(--glass);
+  border:1px solid rgba(200, 169, 110, 0.2);
+  border-radius:32px;
+  padding:3rem;
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  opacity:0;
+  transform:translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease;
+  z-index: 2;
+  transform-style: preserve-3d;
+}
+
+/* Decorative HUD */
+.hud-tag {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: rgba(200, 169, 110, 0.6);
+  padding: 4px 10px;
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.4);
+  pointer-events: none;
+  animation: hud-float 3s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes hud-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.wali-card.visible{opacity:1;transform:translateY(0);}
+
+.wali-photo{
+  flex-shrink:0;
+  width:160px;height:220px;
+  border-radius:16px;
+  background-size: cover;
+  background-position: center;
+  border:2px solid rgba(200,169,110,0.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background-image: url('WALI KELAS/IMG-20260408-WA0124.jpg');
+  box-shadow: 0 0 20px rgba(200,169,110,0.2);
+}
+
+.wali-info{flex:1;}
+
+.wali-quote{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.35rem);
+  color:rgba(255,255,255,0.8);
+  line-height:1.6;
+  margin-bottom:1.5rem;
+  border-left:2px solid var(--accent);
+  padding-left:1.2rem;
+}
+
+.wali-name{
+  font-family:'DM Sans',sans-serif;
+  font-size:1.1rem;
+  font-weight:500;
+  color:#fff;
+}
+
+.wali-role{
+  font-size:0.8rem;
+  color:rgba(255,255,255,0.4);
+  margin-top:0.25rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+}
+
+/* ─── SISWA GRID ─── */
+#siswa-section{
+  background:#050505;
+  padding:6rem 2rem;
+}
+
+.section-header{
+  max-width:1200px;
+  margin:0 auto 3rem;
+}
+
+.section-title{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.5rem,4vw,2.5rem);
+  font-weight:700;
+  color:#fff;
+  margin-bottom:0.5rem;
+}
+
+.siswa-grid{
+  max-width:1200px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:16px;
+  perspective: 1000px;
+}
+
+.siswa-card{
+  aspect-ratio:3/4;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  position:relative;
+  cursor:pointer;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease, box-shadow 0.4s ease;
+  opacity:0;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.siswa-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.siswa-card:hover::before { opacity: 1; }
+
+/* Holographic Scanline */
+.siswa-card::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0; width: 100%; height: 200%;
+  background: linear-gradient(
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.03) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+.siswa-card:hover::after {
+  animation: scanline 3s linear infinite;
+}
+
+@keyframes scanline {
+  from { transform: translateY(0); }
+  to { transform: translateY(50%); }
+}
+
+.siswa-card.visible-active{
+  opacity:1;
+  transform:translateX(0) !important;
+}
+
+.siswa-card:hover{
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px var(--g1);
+  border-color: var(--g1);
+}
+
+.siswa-avatar{
+  width:100%;height:70%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-size: cover;
+  background-position: center;
+  position:relative;
+  overflow:hidden;
+}
+
+.siswa-avatar::before{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--glass);
+}
+
+.siswa-info{
+  padding:12px;
+  height:30%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.siswa-name{
+  font-size:0.78rem;
+  font-weight:500;
+  color:#fff;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.siswa-no{
+  font-family:'Space Mono',monospace;
+  font-size:0.65rem;
+  color:rgba(255,255,255,0.35);
+  margin-top:2px;
+}
+
+.siswa-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.75);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  opacity:0;
+  transition:opacity 0.25s ease;
+  backdrop-filter:blur(4px);
+}
+
+.siswa-card:hover .siswa-overlay{opacity:1;}
+
+.cek-detail{
+  font-family:'Space Mono',monospace;
+  font-size:0.75rem;
+  letter-spacing:0.15em;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  padding:6px 14px;
+  border-radius:100px;
+}
+
+.plus-icon{
+  font-size:1.5rem;
+  color:rgba(255,255,255,0.5);
+}
+
+/* ─── MODAL ─── */
+.modal-backdrop{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(12px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+}
+
+.modal-backdrop.open{display:flex;}
+
+.modal-box{
+  background:#0d0d0d;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:24px;
+  padding:2rem;
+  max-width:360px;
+  width:100%;
+  position:relative;
+  animation:modalIn 0.3s ease;
+}
+
+@keyframes modalIn{
+  from{transform:scale(0.9);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+.modal-close{
+  position:absolute;
+  top:1rem;right:1rem;
+  background:none;
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;
+  width:32px;height:32px;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.modal-avatar{
+  width:90px;height:90px;
+  border-radius:50%;
+  background-size: cover;
+  background-position: center;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1rem;
+  border:2px solid rgba(255,255,255,0.12);
+}
+
+.modal-name{
+  text-align:center;
+  font-size:1.1rem;
+  font-weight:600;
+  margin-bottom:0.25rem;
+}
+
+.modal-details{
+  margin-top:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.modal-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  background:rgba(255,255,255,0.04);
+  border-radius:10px;
+  font-size:0.82rem;
+}
+
+.modal-row-label{color:rgba(255,255,255,0.4);}
+.modal-row-val{color:#fff;font-weight:500;}
+
+/* ─── TAGS / VOTING ─── */
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.2rem;
+  justify-content: center;
+}
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  background: rgba(168, 216, 255, 0.1);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: tagFloat 3s ease-in-out infinite;
+  animation-delay: var(--tdelay, 0s);
+}
+@keyframes tagFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ─── FOTO GANTUNGAN ─── */
+#gallery-section{
+  background:#000;
+  padding:6rem 2rem;
+  overflow:hidden;
+}
+
+.clothesline{
+  position:relative;
+  max-width:1100px;
+  margin:0 auto;
+  height:320px;
+  perspective: 2000px;
+}
+
+.line{
+  position:absolute;
+  top:40px;
+  left:-20px;right:-20px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),rgba(255,255,255,0.3),rgba(255,255,255,0.2),transparent);
+}
+
+.polaroid-wrap{
+  position:absolute;
+  top:20px;
+  cursor:grab;
+  user-select:none;
+  transform-origin:top center;
+  touch-action:none;
+  transform-style: preserve-3d;
+}
+
+.polaroid-wrap:active{cursor:grabbing;}
+
+.polaroid-clip{
+  width:10px;height:14px;
+  background:#c8a96e;
+  border-radius:2px 2px 0 0;
+  margin:0 auto;
+  position:relative;
+  z-index:2;
+  box-shadow:0 0 6px rgba(200,169,110,0.4);
+}
+
+.polaroid{
+  background:#f5f0e8;
+  padding:10px 10px 28px;
+  border-radius:4px;
+  width:140px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.1);
+  transform:rotate(var(--rot,0deg));
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.polaroid-img{
+  width:100%;
+  aspect-ratio:1;
+  border-radius:2px;
+  background-size: cover;
+  background-position: center;
+  overflow:hidden;
+}
+
+.polaroid-caption{
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:0.55rem;
+  color:#555;
+  margin-top:6px;
+  letter-spacing:0.05em;
+}
+
+/* ─── ALBUM GRID ─── */
+#album-section{
+  background:#000;
+  padding:4rem 2rem 6rem;
+}
+
+/* ─── POLAROID ANIMATIONS ─── */
+.polaroid-wrap {
+  opacity: 0;
+  transform: translateY(30px) rotate(0deg);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.polaroid-wrap.reveal {
+  opacity: 1 !important;
+  transform: translateY(0) rotate(var(--rot, 0deg)) !important;
+}
+
+.polaroid-wrap.swinging {
+  animation: polaroid-swing 4s ease-in-out infinite alternate;
+  animation-delay: var(--sdelay, 0s);
+}
+
+.polaroid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.polaroid.flash::after {
+  animation: camera-flash 0.8s ease-out forwards;
+}
+
+@keyframes camera-flash {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes polaroid-swing {
+  0% { transform: translateY(0) rotate(calc(var(--rot, 0deg) - 2deg)); }
+  100% { transform: translateY(0) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+
+/* ─── ALBUM CAROUSEL ─── */
+.album-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.album-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 20px 0;
+  scrollbar-width: none;
+}
+
+.album-carousel::-webkit-scrollbar { display: none; }
+
+.album-item {
+  flex: 0 0 280px;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.album-item:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+}
+
+.album-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.album-nav:hover { background: var(--accent); color: #000; }
+.album-nav.prev { left: -22px; }
+.album-nav.next { right: -22px; }
+
+/* ─── LIGHTBOX ─── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+  backdrop-filter: blur(12px);
+}
+
+.lightbox.open { display: flex; animation: fadeIn 0.3s ease; }
+
+.lightbox-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 20px;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15rem;
+  background: rgba(255,255,255,0.03);
+  width: 500px; height: 500px;
+}
+
+.lightbox.open .lightbox-content { transform: scale(1); }
+
+@media(max-width:600px){
+  .album-item { flex: 0 0 240px; }
+  .album-nav { display: none; }
+  .lightbox-content { width: 300px; height: 300px; font-size: 8rem; }
+}
+
+/* ─── CINEMATIC SCROLL REVEAL ─── */
+section, footer { will-change: transform, opacity; }
+
+.reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-60px) skewX(3deg);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-slide-right {
+  opacity: 0;
+  transform: translateX(60px) skewX(-3deg);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.88) translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-wipe {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-drop {
+  opacity: 0;
+  transform: translateY(-50px) rotateX(15deg);
+  transform-origin: top center;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+.reveal-slide-left.in-view,
+.reveal-slide-right.in-view,
+.reveal-scale.in-view,
+.reveal-drop.in-view { opacity: 1; transform: none; }
+.reveal-wipe.in-view { opacity: 1; transform: none; }
+
+@keyframes scanline-sweep {
+  0%   { top: -4px; opacity: 0.7; }
+  100% { top: 110%; opacity: 0; }
+}
+.section-scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+}
+.section-scanline.sweep {
+  animation: scanline-sweep 0.8s ease forwards;
+}
+@keyframes section-glitch {
+  0%,100% { clip-path: inset(0 0 100% 0); }
+  20% { clip-path: inset(10% 0 70% 0); transform: translateX(-4px); }
+  40% { clip-path: inset(40% 0 40% 0); transform: translateX(4px); }
+  60% { clip-path: inset(70% 0 10% 0); transform: translateX(-2px); }
+  80% { clip-path: inset(0 0 0 0); transform: translateX(0); opacity:0.7; }
+}
+
+/* ─── VISUALIZER & SPOTIFY ─── */
+#audio-visualizer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.spotify-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  max-width: 80vw;
+  z-index: 9999;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease 1s;
+}
+
+.spotify-container.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media(max-width:600px){
+  .spotify-container {
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    width: 260px;
+  }
+}
+
+/* ─── FOOTER ─── */
+#footer{
+  background:#000;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:6rem 2rem 4rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.ig-handle{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(1.2rem,4vw,2.2rem);
+  font-weight:700;
+  color:#fff;
+  letter-spacing:0.05em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+
+.ig-icon{
+  width:36px;height:36px;
+  border:1.5px solid rgba(255,255,255,0.3);
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+}
+
+.footer-sub{
+  font-size:0.75rem;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  margin-top:2rem;
+  font-family:'Space Mono',monospace;
+}
+
+/* ─── SCROLL FADE ─── */
+.fade-up{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+/* ─── CUSTOM CURSOR ─── */
+#cursor-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(168,216,255,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s, left 0.08s ease, top 0.08s ease;
+}
+#cursor-ring.expand { width: 60px; height: 60px; border-color: var(--accent); }
+
+/* ─── CURSOR TRAIL ─── */
+.cursor-trail {
+  position: fixed;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 99990;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: trail-fade 0.6s ease forwards;
+}
+@keyframes trail-fade {
+  0% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(0); }
+}
+
+/* ─── PAGE LOADER ─── */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#page-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+.loader-bar-outer {
+  width: 200px;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.loader-bar-inner {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  box-shadow: 0 0 10px var(--accent);
+}
+.loader-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 30px rgba(168,216,255,0.3);
+  animation: loader-pulse 1.5s ease-in-out infinite;
+}
+@keyframes loader-pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  position: relative;
+  display: inline-block;
+}
+.section-label::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.8s ease;
+}
+.section-label.visible::after { width: 100%; }
+
+/* ─── NEON GRID BACKGROUND on siswa section ─── */
+#siswa-section {
+  position: relative;
+}
+#siswa-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(168,216,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,216,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+#siswa-section > * { position: relative; z-index: 1; }
+
+/* ─── RIPPLE on siswa cards ─── */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(168,216,255,0.2);
+  transform: scale(0);
+  animation: ripple-out 0.6s linear;
+  pointer-events: none;
+  z-index: 10;
+}
+@keyframes ripple-out {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ─── PERPISAHAN SECTION ─── */
+#perpisahan-section {
+  background: #000;
+  padding: 8rem 2rem 6rem;
+  position: relative;
+  overflow: hidden;
+}
+#perpisahan-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 30%, rgba(168,216,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 80% 70%, rgba(255,212,168,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.pesan-block {
+  max-width: 1100px;
+  margin: 0 auto 5rem;
+  position: relative;
+  z-index: 1;
+}
+.pesan-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: rgba(168,216,255,0.45);
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+}
+.pesan-block.active .pesan-label { opacity: 1; transform: translateX(0); }
+.pesan-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.7rem;
+  align-items: baseline;
+}
+.p-word {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(1.6rem, 4.5vw, 4rem);
+  font-weight: 700;
+  color: #fff;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(60px) rotateX(-40deg) scale(0.85);
+  transform-origin: bottom center;
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
+  cursor: default;
+  user-select: none;
+}
+.p-word.shown { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); }
+.p-word.accent-blue { color: var(--accent); }
+.p-word.accent-warm { color: var(--accent2); }
+.p-word.accent-gold { color: #c8a96e; }
+.p-word.big { font-size: clamp(2.2rem, 6.5vw, 6rem); }
+.p-word:hover { animation: word-bounce 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; color: var(--accent); }
+@keyframes word-bounce {
+  0%   { transform: translateY(0) scale(1); }
+  40%  { transform: translateY(-16px) scale(1.08); }
+  70%  { transform: translateY(-5px) scale(1.03); }
+  100% { transform: translateY(0) scale(1); }
+}
+.pesan-signature {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.sig-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,216,255,0.3), transparent);
+  margin: 1.5rem 0;
+}
+.sig-text {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.7);
+  font-weight: 700;
+}
+.sig-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.3);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+}
+
+/* ─── SCROLL PROGRESS BAR ─── */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  z-index: 99997;
+  box-shadow: 0 0 8px var(--accent);
+  transition: width 0.1s linear;
+}
+
+/* ─── FLOATING NAV DOTS ─── */
+#nav-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.nav-dot::before {
+  content: attr(data-label);
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.nav-dot:hover::before { opacity: 1; }
+.nav-dot.active { background: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1.4); }
+@media(max-width:600px) { #nav-dots { display: none; } }
+
+/* ─── HERO ENTRY ANIMATION ─── */
+@keyframes hero-reveal {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.hero-content {
+  animation: hero-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+.scroll-hint {
+  animation: hero-reveal 1s ease 1.4s both;
+}
+
+/* ─── AURORA BACKGROUND on gallery ─── */
+#gallery-section {
+  position: relative;
+  overflow: hidden;
+}
+#gallery-section::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 60%, rgba(168,216,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 80% 30%, rgba(255,212,168,0.04) 0%, transparent 60%);
+  animation: aurora-drift 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes aurora-drift {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(5deg) scale(1.1); }
+}
+
+/* ─── ALBUM ITEM shimmer ─── */
+.album-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+  transform: translateX(-100%);
+  border-radius: inherit;
+}
+.album-item:hover::after {
+  animation: shimmer 0.7s ease forwards;
+}
+@keyframes shimmer {
+  to { transform: translateX(100%); }
+}
+
+/* ─── WALI CARD shimmer border ─── */
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(200,169,110,0.2); box-shadow: 0 0 20px rgba(200,169,110,0.05); }
+  50% { border-color: rgba(200,169,110,0.5); box-shadow: 0 0 40px rgba(200,169,110,0.15); }
+}
+.wali-card.visible {
+  animation: border-glow 4s ease-in-out 0.8s infinite;
+}
+
+/* ─── MARQUEE HOVER PAUSE ─── */
+.marquee-track:hover .marquee-inner { animation-play-state: paused; }
+
+/* ─── FOOTER GLOW PULSE ─── */
+@keyframes footer-glow {
+  0%,100% { text-shadow: 0 0 10px rgba(168,216,255,0.2); }
+  50% { text-shadow: 0 0 30px rgba(168,216,255,0.6), 0 0 60px rgba(168,216,255,0.2); }
+}
+.ig-handle { animation: footer-glow 4s ease-in-out infinite; }
+
+/* ─── COUNT-UP animation trigger ─── */
+.count-up { display: inline-block; }
+
+/* ═══ MOBILE RESPONSIVE — KOMPREHENSIF ═══ */
+
+html, body { overflow-x: hidden; max-width: 100%; }
+
+@media (hover: none) and (pointer: coarse) {
+  #cursor-dot, #cursor-ring, .cursor-trail { display: none !important; }
+}
+
+/* ─── TABLET (≤ 900px) ─── */
+@media (max-width: 900px) {
+  #wali-kelas { padding: 6rem 1.5rem; }
+  .wali-card { flex-direction: column; align-items: center; text-align: center; gap: 2rem; padding: 2.5rem 1.5rem; }
+  .wali-photo { width: 130px; height: 170px; }
+  .wali-quote { padding-left: 0; border-left: none; border-top: 2px solid var(--accent); padding-top: 1rem; }
+  .hud-tag { display: none; }
+  .siswa-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .clothesline { height: 260px; }
+  .polaroid { width: 120px; }
+  .modal-box { max-width: 95vw; padding: 1.5rem; }
+  .spotify-container { width: 240px; }
+}
+
+/* ─── MOBILE (≤ 600px) ─── */
+@media (max-width: 600px) {
+  #hero { min-height: 100dvh; }
+  .hero-year { font-size: clamp(4rem, 22vw, 7rem); }
+
+  #waliSection { padding: 4rem 1rem 1rem; }
+  #wali-kelas { padding: 4rem 0; max-width: 100%; }
+  .wali-card { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; padding: 2rem 1.2rem 2.5rem; border-radius: 20px; }
+  .wali-photo { width: 110px; height: 140px; border-radius: 12px; }
+  .wali-quote { font-size: 0.95rem; padding-left: 0; border-left: none; border-top: 2px solid var(--accent); padding-top: 1rem; text-align: left; }
+  .wali-name { font-size: 1rem; }
+  .wali-role { font-size: 0.72rem; }
+  .hud-tag { display: none; }
+
+  #siswa-section { padding: 4rem 1rem; }
+  .siswa-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .siswa-name { font-size: 0.7rem; }
+  .siswa-no { font-size: 0.6rem; }
+
+  .modal-backdrop { padding: 0.75rem; align-items: flex-end; }
+  .modal-box { max-width: 100%; width: 100%; padding: 1.5rem 1.2rem; border-radius: 20px 20px 12px 12px; max-height: 92dvh; overflow-y: auto; }
+  .modal-avatar { width: 75px; height: 75px; }
+  .modal-name { font-size: 1rem; }
+  .modal-row { font-size: 0.78rem; padding: 7px 10px; }
+
+  #marquee-section { padding: 2rem 0; }
+  .marquee-text { font-size: clamp(1rem, 4vw, 1.5rem); }
+
+  #gallery-section { padding: 4rem 1rem; overflow-x: hidden; }
+  .clothesline { height: 240px; max-width: 100%; overflow: hidden; }
+  .polaroid { width: 100px; padding: 7px 7px 22px; }
+  .polaroid-caption { font-size: 0.48rem; }
+
+  #album-section { padding: 3rem 1rem 5rem; }
+  .album-item { flex: 0 0 220px; }
+  .album-nav { display: none; }
+  .lightbox-content { width: 92vw; height: 92vw; font-size: 6rem; }
+
+  #footer { padding: 5rem 1.2rem 3rem; }
+  .ig-handle { font-size: clamp(1rem, 5vw, 1.5rem); gap: 0.6rem; }
+  .footer-sub { font-size: 0.65rem; letter-spacing: 0.12em; }
+
+  .spotify-container { top: auto; bottom: 16px; left: 50%; width: calc(100vw - 2rem); max-width: 340px; transform: translateX(-50%) translateX(-20px); }
+  .spotify-container.visible { transform: translateX(-50%) !important; opacity: 1; }
+
+  .section-header { margin-bottom: 2rem; }
+  .section-title { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+  #nav-dots { display: none; }
+}
+
+/* ══════════════════════════════════════
+   PERPISAHAN SECTION
+══════════════════════════════════════ */
+#perpisahan-section {
+  position: relative;
+  background: #000;
+  padding: 8rem 2rem 0;
+  overflow: hidden;
+}
+.perp-aurora {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(168,216,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(255,212,168,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(200,169,110,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  animation: perp-aurora-drift 10s ease-in-out infinite alternate;
+}
+@keyframes perp-aurora-drift {
+  0%   { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.08) rotate(3deg); }
+}
+.perp-block {
+  max-width: 860px;
+  margin: 0 auto 7rem;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+}
+.perp-block.in-view { opacity: 1; transform: translateY(0); }
+.perp-chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid rgba(168,216,255,0.2);
+  border-radius: 100px;
+  background: rgba(168,216,255,0.05);
+}
+.perp-chip.accent2 { color: var(--accent2); border-color: rgba(255,212,168,0.2); background: rgba(255,212,168,0.05); }
+.perp-chip.gold { color: #c8a96e; border-color: rgba(200,169,110,0.25); background: rgba(200,169,110,0.06); }
+.perp-sentence { display: flex; flex-wrap: wrap; gap: 0.3em 0.5em; line-height: 1.5; }
+.perp-word {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(30px) rotate(-4deg);
+  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1), color 0.4s ease;
+  cursor: default;
+  position: relative;
+}
+.perp-word.landed { opacity: 1; transform: translateY(0) rotate(0deg); }
+.perp-word:hover { color: var(--accent); transform: translateY(-6px) scale(1.05) !important; z-index: 10; }
+.perp-block[data-perp="2"] .perp-word:hover { color: var(--accent2); }
+.perp-block[data-perp="3"] .perp-word:hover { color: #c8a96e; }
+.perp-word::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.perp-word:hover::after { transform: scaleX(1); }
+.perp-finale {
+  position: relative;
+  text-align: center;
+  padding: 8rem 2rem 10rem;
+  z-index: 2;
+  overflow: hidden;
+}
+.finale-line { display: flex; justify-content: center; align-items: baseline; gap: 0.15em; line-height: 1; }
+.finale-word {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(5rem, 22vw, 16rem);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(80px) skewY(6deg);
+  transition:
+    opacity 1.2s cubic-bezier(0.16,1,0.3,1) calc(var(--fi) * 0.18s),
+    transform 1.2s cubic-bezier(0.16,1,0.3,1) calc(var(--fi) * 0.18s),
+    -webkit-text-stroke 0.4s ease,
+    color 0.4s ease;
+  cursor: default;
+}
+.finale-word.sm { font-size: clamp(2rem, 8vw, 5.5rem); -webkit-text-stroke: 1px rgba(255,255,255,0.1); }
+.finale-dot {
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(5rem, 22vw, 16rem);
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(80px);
+  transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s;
+  line-height: 1;
+}
+.perp-finale.in-view .finale-word,
+.perp-finale.in-view .finale-dot { opacity: 1; transform: none; }
+.finale-word:hover { color: rgba(255,255,255,0.12); -webkit-text-stroke: 1px var(--accent); }
+.finale-word.sm:hover { -webkit-text-stroke: 1px var(--accent2); }
+.finale-sub {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em 0.6em;
+  margin-top: 2.5rem;
+}
+.fsub-word {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.65rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease calc(0.8s + var(--fi) * 0.12s), transform 0.8s ease calc(0.8s + var(--fi) * 0.12s), color 0.3s ease;
+  cursor: default;
+}
+.fsub-word:hover { color: rgba(255,255,255,0.7); }
+.perp-finale.in-view .fsub-word { opacity: 1; transform: none; }
+.fsub-sep { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: rgba(255,255,255,0.1); opacity: 0; transition: opacity 1.5s ease 1.2s; }
+.perp-finale.in-view .fsub-sep { opacity: 1; }
+.perp-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: perp-float var(--d, 4s) var(--delay, 0s) ease-in-out infinite alternate;
+}
+@keyframes perp-float {
+  0%   { transform: translate(0, 0) scale(1); opacity: var(--op, 0.3); }
+  100% { transform: translate(var(--dx,10px), var(--dy,-20px)) scale(1.4); opacity: 0; }
+}
+
+/* ─── VERY SMALL (≤ 380px) ─── */
+@media (max-width: 380px) {
+  .siswa-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .wali-card { padding: 1.5rem 1rem 2rem; }
+  .wali-photo { width: 95px; height: 120px; }
+  .modal-box { padding: 1.2rem 1rem; }
+  .polaroid { width: 88px; padding: 6px 6px 20px; }
+  .clothesline { height: 210px; }
+  .album-item { flex: 0 0 180px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PAGE LOADER ═══ -->
+<div id="page-loader">
+  <div class="loader-logo">XII.8</div>
+  <div class="loader-text" id="loaderLabel">Memuat kenangan...</div>
+  <div class="loader-bar-outer"><div class="loader-bar-inner" id="loaderBar"></div></div>
+</div>
+
+<!-- ═══ CUSTOM CURSOR ═══ -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ═══ SCROLL PROGRESS ═══ -->
+<div id="scroll-progress"></div>
+
+<!-- ═══ NAV DOTS ═══ -->
+<div id="nav-dots">
+  <div class="nav-dot active" data-label="Hero" data-target="hero"></div>
+  <div class="nav-dot" data-label="Marquee" data-target="marquee-section"></div>
+  <div class="nav-dot" data-label="Wali Kelas" data-target="waliSection"></div>
+  <div class="nav-dot" data-label="Siswa" data-target="siswa-section"></div>
+  <div class="nav-dot" data-label="Kenangan" data-target="gallery-section"></div>
+  <div class="nav-dot" data-label="Album" data-target="album-section"></div>
+  <div class="nav-dot" data-label="Perpisahan" data-target="perpisahan-section"></div>
+  <div class="nav-dot" data-label="Footer" data-target="footer"></div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-year" id="heroText">XII.8</div>
+    <div class="hero-sub" id="heroSub"></div>
+  </div>
+
+  <div class="scroll-hint" onclick="document.getElementById('marquee-section').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<section id="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-inner" id="m1"></div>
+    <div class="marquee-inner" id="m1b"></div>
+  </div>
+  <div class="marquee-track" style="margin-top:0.5rem;">
+    <div class="marquee-inner reverse" id="m2"></div>
+    <div class="marquee-inner reverse" id="m2b"></div>
+  </div>
+</section>
+
+<!-- ═══ WALI KELAS ═══ -->
+<section style="background:#000;padding:5rem 2rem 2rem;position:relative;" id="waliSection">
+  <div class="wali-spotlight" id="waliSpotlight"></div>
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label fade-up">— Wali Kelas</div>
+  </div>
+  <div id="wali-kelas">
+    <div class="wali-card" id="waliCard">
+      <!-- Decorative HUD -->
+      <div class="hud-tag" style="top:-12px; left:30px;">[ STATUS: ACTIVE ]</div>
+      <div class="hud-tag" style="top:-12px; right:30px;">[ LEVEL: ADMIN ]</div>
+      <div class="hud-tag" style="bottom:-12px; left:50%; transform:translateX(-50%);">[ ID: WK_XII8 ]</div>
+
+      <div class="wali-photo">👩‍🏫</div>
+      <div class="wali-info">
+        <div class="wali-quote" id="waliQuote"></div>
+        <div class="wali-name">SARI WAHYU UNTARI S.pd</div>
+        <div class="wali-role">Wali Kelas XII.8 • SMANSAKA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SISWA ═══ -->
+<section id="siswa-section">
+  <div class="section-header fade-up">
+    <div class="section-label">— Anggota Kelas</div>
+    <div class="section-title">34 Wajah, Satu Cerita.</div>
+  </div>
+  <div class="siswa-grid" id="siswaGrid"></div>
+</section>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-backdrop" id="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+    <div class="modal-avatar" id="mAvatar"></div>
+    <div class="modal-name" id="mName"></div>
+    <div style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;" id="mNo"></div>
+    <div class="modal-details" id="mDetails"></div>
+  </div>
+</div>
+
+<!-- ═══ FOTO GANTUNGAN ═══ -->
+<section id="gallery-section">
+  <div style="max-width:1100px;margin:0 auto 3rem;">
+    <div class="section-label fade-up">— Momen Bersama</div>
+    <div class="section-title fade-up" style="font-family:'Space Mono',monospace;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;">Kenangan yang Menggantung</div>
+  </div>
+  <div class="clothesline" id="clothesline">
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ═══ ALBUM ═══ -->
+<section id="album-section">
+  <div style="max-width:900px;margin:0 auto 2rem;">
+    <div class="section-label fade-up">— Album Kelas</div>
+  <div class="album-container">
+    <button class="album-nav prev" onclick="moveAlbum(-1)">❮</button>
+    <button class="album-nav next" onclick="moveAlbum(1)">❯</button>
+    <div class="album-carousel" id="albumGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content" id="lightboxContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- ═══ PERPISAHAN ═══ -->
+<section id="perpisahan-section">
+
+  <!-- BG aurora -->
+  <div class="perp-aurora"></div>
+
+  <!-- BLOK 1 — SEKIAN DARI KAMI -->
+  <div class="perp-block" data-perp="1">
+    <div class="perp-chip">[ SEKIAN DARI KAMI ]</div>
+    <div class="perp-sentence" data-sentence="Terima kasih sudah menjadi bagian dari cerita kami."></div>
+  </div>
+
+  <!-- BLOK 2 — SAMPAI JUMPA -->
+  <div class="perp-block" data-perp="2">
+    <div class="perp-chip accent2">[ SAMPAI JUMPA DI HARI ESOK ]</div>
+    <div class="perp-sentence" data-sentence="Sampai jumpa — bukan selamat tinggal. Karena kenangan ini tidak akan pernah pergi."></div>
+  </div>
+
+  <!-- BLOK 3 — DOA UNTUK MASA DEPAN -->
+  <div class="perp-block" data-perp="3">
+    <div class="perp-chip gold">[ DOA UNTUK MASA DEPANMU ]</div>
+    <div class="perp-sentence" data-sentence="Semoga langkahmu selalu diiringi cahaya. Raihlah bintang yang paling jauh sekalipun."></div>
+  </div>
+
+  <!-- BLOK 4 — UCAPAN BESAR -->
+  <div class="perp-finale" id="perpFinale">
+    <div class="finale-line" id="finaleLine1">
+      <span class="finale-word" style="--fi:0">XII</span><span class="finale-dot">.</span><span class="finale-word" style="--fi:1">8</span>
+    </div>
+    <div class="finale-line" id="finaleLine2">
+      <span class="finale-word sm" style="--fi:2">SMANSAKA</span>
+    </div>
+    <div class="finale-sub" id="finaleSub">
+      <span class="fsub-word" style="--fi:0">2025</span>
+      <span class="fsub-sep">/</span>
+      <span class="fsub-word" style="--fi:1">2026</span>
+      <span class="fsub-sep">·</span>
+      <span class="fsub-word" style="--fi:2">34 Jiwa</span>
+      <span class="fsub-sep">·</span>
+      <span class="fsub-word" style="--fi:3">Satu Hati</span>
+      <span class="fsub-sep">·</span>
+      <span class="fsub-word" style="--fi:4">Satu Kenangan</span>
+    </div>
+    <div class="finale-particles" id="perpParticles"></div>
+  </div>
+
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <canvas id="audio-visualizer"></canvas>
+
+  <div class="ig-handle fade-up">
+    <div class="ig-icon">📸</div>
+    <!-- ✏️ GANTI: Username Instagram kelas -->
+    @XII.8_SMANSAKA
+  </div>
+  <div class="fade-up" style="font-size:0.85rem;color:rgba(255,255,255,0.3);margin-top:0.5rem;">Follow kita di Instagram</div>
+  <div class="footer-sub fade-up">XII.8 • SMANSAKA • 2025/2026</div>
+</footer>
+
+<!-- ═══ SPOTIFY PLAYER (Moved out of footer to stay sharp) ═══ -->
+<div class="spotify-container" id="spotifyPlayer">
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4r4bvzuNI2OAGQjdGSlxnD?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
+<script>
+
+/* ─── PAGE LOADER ─── */
+const loader = document.getElementById('page-loader');
+const loaderBar = document.getElementById('loaderBar');
+const loaderLabel = document.getElementById('loaderLabel');
+const loadSteps = ['Memuat kenangan...','Menyiapkan memori...','Merangkai cerita...','Siap ✓'];
+let loadProgress = 0;
+let loadStepIdx = 0;
+const loadInterval = setInterval(() => {
+  loadProgress += Math.random() * 18 + 5;
+  if (loadProgress >= 100) { loadProgress = 100; clearInterval(loadInterval); }
+  loaderBar.style.width = loadProgress + '%';
+  const stepIdx = Math.floor((loadProgress / 100) * (loadSteps.length - 1));
+  if (stepIdx !== loadStepIdx) {
+    loadStepIdx = stepIdx;
+    loaderLabel.style.opacity = '0';
+    setTimeout(() => {
+      loaderLabel.textContent = loadSteps[loadStepIdx];
+      loaderLabel.style.opacity = '1';
+      loaderLabel.style.transition = 'opacity 0.4s ease';
+    }, 200);
+  }
+  if (loadProgress >= 100) {
+    setTimeout(() => loader.classList.add('hidden'), 400);
+  }
+}, 80);
+
+/* ─── CUSTOM CURSOR ─── */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top = my + 'px';
+});
+function lerpCursor() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(lerpCursor);
+}
+lerpCursor();
+document.querySelectorAll('a, button, .siswa-card, .album-item, .nav-dot, .polaroid').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('expand'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('expand'));
+});
+
+/* ─── CURSOR TRAIL ─── */
+let lastTrailTime = 0;
+document.addEventListener('mousemove', e => {
+  const now = Date.now();
+  if (now - lastTrailTime < 40) return;
+  lastTrailTime = now;
+  const t = document.createElement('div');
+  t.className = 'cursor-trail';
+  t.style.left = e.clientX + 'px';
+  t.style.top = e.clientY + 'px';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 600);
+});
+
+/* ─── SCROLL PROGRESS BAR ─── */
+const scrollBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  scrollBar.style.width = (window.scrollY / max * 100) + '%';
+}, { passive: true });
+
+/* ─── FLOATING NAV DOTS ─── */
+const navSections = ['hero','marquee-section','waliSection','siswa-section','gallery-section','album-section','footer'];
+const navDots = document.querySelectorAll('.nav-dot');
+navDots.forEach(d => {
+  d.addEventListener('click', () => {
+    const target = document.getElementById(d.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const id = en.target.id;
+      navDots.forEach(d => {
+        d.classList.toggle('active', d.dataset.target === id);
+      });
+    }
+  });
+}, { threshold: 0.4 });
+navSections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) navObs.observe(el);
+});
+
+/* ─── SECTION LABEL ANIMATION ─── */
+const labelObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) en.target.classList.add('visible');
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.section-label').forEach(el => labelObs.observe(el));
+
+/* ─── RIPPLE on siswa card click ─── */
+document.addEventListener('click', e => {
+  const card = e.target.closest('.siswa-card');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  const size = Math.max(rect.width, rect.height);
+  r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+  card.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+});
+
+/* ─── PARTICLES ─── */
+const pContainer=document.getElementById('particles');
+for(let i=0;i<80;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;opacity:${Math.random()*0.5};width:${Math.random()<0.3?2:1}px;height:${Math.random()<0.3?2:1}px;`;
+  pContainer.appendChild(p);
+}
+
+/* ─── HERO TYPING ─── */
+const subtitles=['SMANSAKA','Angkatan 2025','34 Jiwa Satu Hati','Kenangan Abadi'];
+let si=0,ci=0,deleting=false,pause=0;
+const el=document.getElementById('heroSub');
+function typeLoop(){
+  if(pause>0){pause--;setTimeout(typeLoop,50);return;}
+  const word=subtitles[si];
+  if(!deleting){
+    el.textContent=word.slice(0,++ci);
+    if(ci===word.length){deleting=true;pause=40;}
+  }else{
+    el.textContent=word.slice(0,--ci);
+    if(ci===0){deleting=false;si=(si+1)%subtitles.length;pause=10;}
+  }
+  setTimeout(typeLoop,deleting?60:90);
+}
+setTimeout(typeLoop,1000);
+
+/* ─── MARQUEE ─── */
+const repeat=10;
+['m1','m1b'].forEach(id=>{
+  for(let i=0;i<repeat;i++){
+    const s=document.createElement('span');
+    s.className='marquee-text'+(i%3===1?' accent':'');
+    s.textContent='XII.8 SMANSAKA • ';
+    document.getElementById(id).appendChild(s);
+  }
+});
+['m2','m2b'].forEach(id=>{
+  for(let i=0;i<repeat;i++){
+    const s=document.createElement('span');
+    s.className='marquee-text'+(i%2===0?' accent':'');
+    s.textContent='SMANSAKA • XII.8 • ';
+    document.getElementById(id).appendChild(s);
+  }
+});
+
+/* ─── WALI KELAS QUOTE TYPING ─── */
+/* ✏️ GANTI: Quote dari wali kelas */
+const quote='"Ilmu tanpa akhlak adalah kosong, akhlak tanpa ilmu adalah buta."';
+let qi=0;
+const qEl=document.getElementById('waliQuote');
+function typeQuote(){
+  if(qi<=quote.length){
+    qEl.textContent=quote.slice(0,qi++);
+    setTimeout(typeQuote,35);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   ✏️  DATA SISWA — EDIT BAGIAN INI SESUAI DATA ASLI
+   ══════════════════════════════════════════════════════ */
+const emojis=['😊','🌟','🎯','🚀','💡','🎨','🏆','✨','🌙','🔥','🌈','⚡','🎭','🌺','🦋','🍀'];
+
+const colors=[
+  ['#a8d8ff','#7bbfff'],
+  ['#ffd4a8','#ffb87a'],
+  ['#c8a8ff','#a87aff'],
+  ['#a8ffcf','#7affa0'],
+  ['#ffa8d4','#ff7ab8'],
+  ['#fffca8','#fff07a'],
+];
+
+/* ✏️ MASUKKAN: Data lengkap 34 siswa di sini (Absen 01-34) */
+const students = [
+  { no:'01', name:'Alvin Agya Destiansyah',         img:'MURID/IMG-20260408-WA0011.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Membaca', cita:'Programmer', motto:'Learn every day' },
+  { no:'02', name:'Amalia Sari',                     img:'MURID/IMG-20260408-WA0012.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Musik', cita:'Musisi', motto:'Keep moving' },
+  { no:'03', name:'Amanda Kurnia Utami',             img:'MURID/IMG-20260408-WA0013.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Menari', cita:'Artist', motto:'Art is life' },
+  { no:'04', name:'Andika Mbayu Putra',              img:'MURID/IMG-20260408-WA0014.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Bola', cita:'Atlet', motto:'Never give up' },
+  { no:'05', name:'Anita Rahayu',                    img:'MURID/IMG-20260408-WA0015.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Masak', cita:'Chef', motto:'Taste matters' },
+  { no:'06', name:'Cinta Kirana Amelia',             img:'MURID/IMG-20260408-WA0016.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Game', cita:'Engineer', motto:'Game on' },
+  { no:'07', name:'Desi Anindawati',                 img:'MURID/IMG-20260408-WA0017.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Film', cita:'Director', motto:'Action!' },
+  { no:'08', name:'Dianna Nur Khoirun Nisa',         img:'MURID/IMG-20260408-WA0018.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Foto', cita:'Fotografer', motto:'Smile' },
+  { no:'09', name:'Distalia',                        img:'MURID/IMG-20260408-WA0019.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Renang', cita:'Kapten', motto:'Deep sea' },
+  { no:'10', name:'Elang Wisam Madaniy Jaisyullah',  img:'MURID/IMG-20260408-WA0020.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Lari', cita:'Police', motto:'Fast' },
+  { no:'11', name:'Firman Himawan',                  img:'MURID/IMG-20260408-WA0021.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Seni', cita:'Designer', motto:'Create' },
+  { no:'12', name:'Galuh Fajar Prabowo',             img:'MURID/IMG-20260408-WA0022.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Tulis', cita:'Penulis', motto:'Words power' },
+  { no:'13', name:'Gea Fara Amanda',                 img:'MURID/IMG-20260408-WA0023.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Robot', cita:'Inventor', motto:'Build' },
+  { no:'14', name:'Ima Pebriani',                    img:'MURID/IMG-20260408-WA0024.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Sing', cita:'Singer', motto:'Melody' },
+  { no:'15', name:'Joko Aldi Santoso',               img:'MURID/IMG-20260408-WA0025.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Catur', cita:'Master', motto:'Think ahead' },
+  { no:'16', name:'Juwita Angellina',                img:'MURID/IMG-20260408-WA0026.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Mancing', cita:'Marine', motto:'Quiet' },
+  { no:'17', name:'Karisma Ramadhani',               img:'MURID/IMG-20260408-WA0027.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Sains', cita:'Dokter', motto:'Cure' },
+  { no:'18', name:'Khaliza Naura Nur Izzaty',        img:'MURID/IMG-20260408-WA0028.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Silat', cita:'Tentara', motto:'Strong' },
+  { no:'19', name:'Laudya Shintia Bella',            img:'MURID/IMG-20260408-WA0029.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Game', cita:'Pro Player', motto:'Win everything' },
+  { no:'20', name:'Lutviana Nur Hasanah',            img:'MURID/IMG-20260408-WA0030.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Code', cita:'Developer', motto:'Logic first' },
+  { no:'21', name:'Mecca Dewi Pratysta',             img:'MURID/IMG-20260408-WA0031.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Design', cita:'Architect', motto:'Structure' },
+  { no:'22', name:'Raditya Arya Saputra',            img:'MURID/IMG-20260408-WA0032.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Read', cita:'Lawyer', motto:'Truth' },
+  { no:'23', name:'Rafi Andika Aditia',              img:'MURID/IMG-20260408-WA0033.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Write', cita:'Journalist', motto:'Reports' },
+  { no:'24', name:'Rangga Aditya Putra Ramadhan',    img:'MURID/IMG-20260408-WA0034.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Draw', cita:'Animator', motto:'Motion' },
+  { no:'25', name:'Rehan Oktavio Pratama',           img:'MURID/IMG-20260408-WA0035.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Cook', cita:'Patissier', motto:'Sweet' },
+  { no:'26', name:'Ririk Yogi Yuliantoro',           img:'MURID/IMG-20260408-WA0036.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Sport', cita:'Manager', motto:'Lead' },
+  { no:'27', name:'Ryan Tri Saputra',                img:'MURID/IMG-20260408-WA0037.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Tech', cita:'CTO', motto:'Innovate' },
+  { no:'28', name:'Shinta Ainul Majidah',            img:'MURID/IMG-20260408-WA0038.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Sleep', cita:'CEO', motto:'Dream' },
+  { no:'29', name:'Sindi Sistia Rani',               img:'MURID/IMG-20260408-WA0039.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Travel', cita:'Pilot', motto:'Sky limit' },
+  { no:'30', name:'Tri Ayu Iriani',                  img:'MURID/IMG-20260408-WA0040.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Learn', cita:'Professor', motto:'Knowledge' },
+  { no:'31', name:'Wahyu Yuhono',                    img:'MURID/IMG-20260408-WA0041.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Hack', cita:'Security', motto:'Protect' },
+  { no:'32', name:'Zahra Dewi Aryanti',              img:'MURID/IMG-20260408-WA0042.jpg', g1:colors[1][0], g2:colors[1][1], ttl:'Jakarta, 2007', hobi:'Fix', cita:'Mechanic', motto:'Fix it' },
+  { no:'33', name:'Zie Zie Fauzia Azahra Ramadani',  img:'MURID/IMG-20260408-WA0043.jpg', g1:colors[2][0], g2:colors[2][1], ttl:'Jakarta, 2007', hobi:'Help', cita:'Social worker', motto:'Care' },
+  { no:'34', name:'Zufar Chotibul Umam',             img:'MURID/IMG-20260408-WA0044.jpg', g1:colors[0][0], g2:colors[0][1], ttl:'Jakarta, 2007', hobi:'Play', cita:'Streamer', motto:'Live' }
+];
+/* ══════════════════════════════════════════════════════ */
+
+const grid=document.getElementById('siswaGrid');
+students.forEach((s,i)=>{
+  const card=document.createElement('div');
+  card.className='siswa-card';
+  card.style.transitionDelay=`${(i%8)*0.05}s`;
+  card.style.setProperty('--g1', s.g1);
+  card.style.setProperty('--g2', s.g2);
+  
+  card.innerHTML=`
+    <div class="siswa-avatar" style="background-image:url('${s.img}');"></div>
+    <div class="siswa-info">
+      <div class="siswa-no">#${s.no}</div>
+      <div class="siswa-name">${s.name}</div>
+    </div>
+    <div class="siswa-overlay">
+      <div class="plus-icon">+</div>
+      <div class="cek-detail">LIHAT DATA</div>
+    </div>`;
+
+  // 3D Tilt Logic for Cards
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotX = ((y - centerY) / centerY) * -12;
+    const rotY = ((x - centerX) / centerX) * 12;
+    card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.05)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+
+  card.addEventListener('click',()=>openModal(s));
+  grid.appendChild(card);
+});
+
+function openModal(s){
+  document.getElementById('mAvatar').style.backgroundImage = `url('${s.img}')`;
+  document.getElementById('mName').textContent=s.name;
+  document.getElementById('mNo').textContent=`No. Absen #${s.no}`;
+  
+  let detailsHtml = `
+    <div class="modal-row"><span class="modal-row-label">TTL</span><span class="modal-row-val">${s.ttl}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Hobi</span><span class="modal-row-val">${s.hobi}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Cita-cita</span><span class="modal-row-val">${s.cita}</span></div>
+    <div class="modal-row"><span class="modal-row-label">Motto</span><span class="modal-row-val">${s.motto}</span></div>
+  `;
+
+  if(s.tags && s.tags.length > 0) {
+    detailsHtml += `<div class="tag-container">` + 
+      s.tags.map((t, idx) => `<span class="tag" style="--tdelay:${idx*0.2}s">${t}</span>`).join('') + 
+      `</div>`;
+  }
+  
+  document.getElementById('mDetails').innerHTML = detailsHtml;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(e){
+  if(e.target===document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+
+/* ─── POLAROID DRAGGABLE ─── */
+const photos=[
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0063.jpg',caption:'Momen 1',rot:3},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0066.jpg',caption:'Momen 2',rot:-2},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0098.jpg',caption:'Momen 3',rot:2},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0100.jpg',caption:'Momen 4',rot:-3},
+  {img:'KENANGAN MENGGANTUNG/IMG-20260408-WA0111.jpg',caption:'Momen 5',rot:3},
+];
+
+const cl=document.getElementById('clothesline');
+const clW=Math.min(window.innerWidth,1100);
+photos.forEach((ph,i)=>{
+  const wrap=document.createElement('div');
+  wrap.className='polaroid-wrap';
+  const left=60+i*(clW-200)/4;
+  wrap.innerHTML=`
+    <div class="polaroid-clip"></div>
+    <div class="polaroid" style="--rot:${ph.rot}deg;">
+      <div class="polaroid-img" style="background-image:url('${ph.img}');"></div>
+      <div class="polaroid-caption">${ph.caption}</div>
+    </div>`;
+  wrap.style.setProperty('--sdelay', `${i * 0.5}s`);
+  wrap.style.setProperty('--rot', `${ph.rot}deg`);
+  wrap.style.left = left + 'px';
+  wrap.style.top = '20px';
+
+  const polaroid = wrap.querySelector('.polaroid');
+
+  // 3D Tilt Logic
+  wrap.addEventListener('mousemove', e => {
+    if (dragging) return;
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg
+    const rotateY = ((x - centerX) / centerX) * 15;
+    polaroid.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(var(--rot)) scale(1.05)`;
+  });
+
+  wrap.addEventListener('mouseleave', () => {
+    polaroid.style.transform = '';
+  });
+
+  let dragging=false,startX=0,startY=0,origLeft=left,origTop=20,curX=left,curY=20,swingAngle=0;
+
+  function getXY(e){
+    if(e.touches)return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+    return{x:e.clientX,y:e.clientY};
+  }
+
+  wrap.addEventListener('mousedown',e=>{dragging=true;const{x,y}=getXY(e);startX=x-curX;startY=y-curY;wrap.style.zIndex=100;e.preventDefault();});
+  wrap.addEventListener('touchstart',e=>{dragging=true;const{x,y}=getXY(e);startX=x-curX;startY=y-curY;wrap.style.zIndex=100;},{passive:true});
+
+  function onMove(e){
+    if(!dragging)return;
+    const{x,y}=getXY(e);
+    curX=x-startX;curY=y-startY;
+    swingAngle=(curX-origLeft)*0.05;
+    wrap.style.left=curX+'px';
+    wrap.style.top=curY+'px';
+    wrap.style.transform=`rotate(${swingAngle}deg)`;
+  }
+
+  function onUp(){
+    if(!dragging)return;
+    dragging=false;
+    wrap.style.zIndex='';
+    const spring=setInterval(()=>{
+      curX+=(origLeft-curX)*0.15;
+      curY+=(origTop-curY)*0.15;
+      swingAngle*=0.8;
+      wrap.style.left=curX+'px';
+      wrap.style.top=curY+'px';
+      wrap.style.transform=`rotate(${swingAngle}deg)`;
+      if(Math.abs(curX-origLeft)<0.5&&Math.abs(curY-origTop)<0.5){
+        curX=origLeft;curY=origTop;
+        wrap.style.left=origLeft+'px';
+        wrap.style.top=origTop+'px';
+        wrap.style.transform='';
+        clearInterval(spring);
+      }
+    },16);
+  }
+
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('mouseup',onUp);
+  document.addEventListener('touchmove',onMove,{passive:true});
+  document.addEventListener('touchend',onUp);
+
+  cl.appendChild(wrap);
+});
+
+/* ─── ALBUM CAROUSEL Logic ─── */
+const albumPhotos=[
+  'ALBUM KELAS/IMG-20260408-WA0056.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0059.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0062.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0101.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0102.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0112.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0115.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0118.jpg',
+  'ALBUM KELAS/IMG-20260408-WA0120.jpg'
+];
+const ag=document.getElementById('albumGrid');
+
+albumPhotos.forEach((img,i)=>{
+  const item=document.createElement('div');
+  item.className='album-item';
+  item.style.backgroundImage=`url('${img}')`;
+  item.onclick = () => openAlbumLightbox(img);
+  ag.appendChild(item);
+});
+
+function openAlbumLightbox(img) {
+  const lb = document.getElementById('lightbox');
+  const lbC = document.getElementById('lightboxContent');
+  lbC.textContent = '';
+  lbC.style.backgroundImage = `url('${img}')`;
+  lbC.style.backgroundSize = 'contain';
+  lbC.style.backgroundRepeat = 'no-repeat';
+  lbC.style.backgroundPosition = 'center';
+  lb.classList.add('open');
+}
+
+let albumInterval;
+function startAlbumAutoPlay() {
+  clearInterval(albumInterval);
+  albumInterval = setInterval(() => moveAlbum(1), 3000);
+}
+
+function moveAlbum(dir) {
+  const maxScroll = ag.scrollWidth - ag.clientWidth;
+  if (dir === 1 && ag.scrollLeft >= maxScroll - 10) {
+    ag.scrollTo({ left: 0, behavior: 'smooth' });
+  } else if (dir === -1 && ag.scrollLeft <= 10) {
+    ag.scrollTo({ left: maxScroll, behavior: 'smooth' });
+  } else {
+    ag.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  }
+  startAlbumAutoPlay(); // Reset timer on manual move
+}
+startAlbumAutoPlay();
+
+/* ─── LIGHTBOX Logic ─── */
+function openLightbox(content, bg) {
+  const lb = document.getElementById('lightbox');
+  const lbC = document.getElementById('lightboxContent');
+  lbC.textContent = content;
+  lbC.style.background = bg;
+  lb.classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+/* ─── INTERSECTION OBSERVER ─── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      en.target.classList.add('visible');
+      if(en.target.id==='waliCard')setTimeout(typeQuote,400);
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('.fade-up,.wali-card').forEach(el=>io.observe(el));
+io.observe(document.getElementById('spotifyPlayer'));
+
+/* ─── DIRECTION-AWARE STUDENT CARDS ─── */
+let isScrollingDown = true;
+let lastSiswaY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+  const currentY = window.scrollY;
+  if (Math.abs(currentY - lastSiswaY) > 5) {
+    isScrollingDown = currentY > lastSiswaY;
+    lastSiswaY = currentY;
+  }
+}, { passive: true });
+
+const cardObs=new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting) {
+      if(!en.target.classList.contains('visible-active')) {
+        // Prepare starting point
+        en.target.style.transform = isScrollingDown ? 'translateX(-80px)' : 'translateX(80px)';
+        en.target.style.opacity = '0';
+        en.target.style.transition = 'none'; // Disable transition for instant snap
+        
+        // Force reflow
+        en.target.offsetHeight; 
+        
+        // Start animation
+        requestAnimationFrame(() => {
+          en.target.style.transition = ''; // Restore transition
+          en.target.classList.add('visible-active');
+          // Clear inline styles so they don't block CSS
+          en.target.style.transform = '';
+          en.target.style.opacity = '';
+        });
+      }
+    } else {
+      en.target.classList.remove('visible-active');
+    }
+  });
+},{threshold: 0.1});
+document.querySelectorAll('.siswa-card').forEach(c=>cardObs.observe(c));
+
+/* ─── GALLERY SEQUENTIAL ANIMATION ─── */
+const galleryObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const wraps = en.target.querySelectorAll('.polaroid-wrap');
+      wraps.forEach((w, idx) => {
+        setTimeout(() => {
+          w.classList.add('reveal');
+          const p = w.querySelector('.polaroid');
+          p.classList.add('flash');
+          // Start passive swing after it settles
+          setTimeout(() => { 
+            if(w.classList.contains('reveal')) {
+              w.classList.add('swinging');
+              p.classList.remove('flash');
+            }
+          }, 1000);
+        }, idx * 400);
+      });
+    } else {
+      en.target.querySelectorAll('.polaroid-wrap').forEach(w => {
+        w.classList.remove('reveal', 'swinging');
+      });
+    }
+  });
+}, { threshold: 0.2 });
+galleryObs.observe(document.getElementById('clothesline'));
+
+/* ─── HERO PARALLAX ─── */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  const hero=document.getElementById('heroText');
+  if(y<window.innerHeight){
+    hero.style.transform=`translateY(${y*0.3}px)`;
+    hero.style.opacity=1-y/400;
+  }
+});
+
+/* ─── AMBIENT VISUALIZER ─── */
+const canvas = document.getElementById('audio-visualizer');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+
+function resizeVisualizer() {
+  cw = canvas.width = window.innerWidth;
+  ch = canvas.height = 120;
+}
+window.addEventListener('resize', resizeVisualizer);
+resizeVisualizer();
+
+let vTime = 0;
+function animateVisualizer() {
+  ctx.clearRect(0, 0, cw, ch);
+  vTime += 0.015;
+  
+  const bars = 80;
+  const barGap = 2;
+  const barWidth = (cw / bars) - barGap;
+  
+  for(let i=0; i<bars; i++) {
+    const hue = 200 + Math.sin(vTime + i*0.05) * 20;
+    // Procedural movement simulating audio frequencies
+    const slow = Math.sin(vTime + i * 0.15) * 25;
+    const fast = Math.sin(vTime * 2.5 + i * 0.4) * 10;
+    const peak = Math.random() < 0.05 ? Math.random() * 20 : 0; // Random peaks
+    
+    const height = 15 + Math.abs(slow + fast) + peak;
+    
+    ctx.fillStyle = `hsla(${hue}, 100%, 70%, 0.3)`;
+    ctx.fillRect(i * (cw/bars), ch, barWidth, -height);
+    
+    // Glossy top
+    ctx.fillStyle = `hsla(${hue}, 100%, 80%, 0.6)`;
+    ctx.fillRect(i * (cw/bars), ch - height, barWidth, 2);
+  }
+  requestAnimationFrame(animateVisualizer);
+}
+animateVisualizer();
+
+/* ─── WALI KELAS Logic ─── */
+const wSec = document.getElementById('waliSection');
+const wSpot = document.getElementById('waliSpotlight');
+const wCard = document.getElementById('waliCard');
+
+wSec.addEventListener('mousemove', e => {
+  const rect = wSec.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  wSpot.style.setProperty('--x', x + '%');
+  wSpot.style.setProperty('--y', y + '%');
+
+  // 3D Tilt
+  const cRect = wCard.getBoundingClientRect();
+  const cx = e.clientX - cRect.left;
+  const cy = e.clientY - cRect.top;
+  const rx = ((cy - cRect.height/2) / (cRect.height/2)) * -8;
+  const ry = ((cx - cRect.width/2) / (cRect.width/2)) * 8;
+  wCard.style.transform = `perspective(1500px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.02)`;
+});
+
+wSec.addEventListener('mouseleave', () => {
+  wCard.style.transform = '';
+});
+
+const qText = "\"Pendidikan adalah senjata paling ampuh untuk merubah dunia. Mari kita jalin kebersamaan dan prestasi bersama XII.8.\"";
+let qCount = 0;
+function typeQuote(){
+  const target = document.getElementById('waliQuote');
+  if(qCount < qText.length){
+    target.innerHTML = qText.substring(0, qCount+1) + '<span class="cursor" style="opacity:1; border-left: 2px solid var(--accent); margin-left:2px; animation: blink 0.8s infinite;"></span>';
+    qCount++;
+    setTimeout(typeQuote, 40);
+  } else {
+    target.innerHTML = qText + '<span class="cursor" style="border-left: 2px solid var(--accent); margin-left:2px; animation: blink 0.8s infinite;"></span>';
+  }
+}
+
+/* ─── CINEMATIC SCROLL REVEAL ─── */
+// Section siswa dikecualikan karena kartu-kartunya punya observer sendiri
+// Section wipe dikecualikan dari overflow:hidden agar tidak clip isinya
+const revealMap = {
+  0: 'reveal-scale',        // hero (tidak ada di querySelectorAll, skip)
+  1: 'reveal-slide-left',   // marquee
+  2: 'reveal-scale',        // wali kelas
+  3: 'reveal-drop',         // siswa — hanya scanline, tidak opacity
+  4: 'reveal-slide-right',  // gallery
+  5: 'reveal-scale',        // album
+  6: 'reveal-slide-left',   // spotify/visualizer
+  7: 'reveal-scale',        // footer
+};
+
+// Section yang punya child animation sendiri — jangan di-opacity-kan
+const skipOpacitySections = ['siswa-section', 'gallery-section', 'perpisahan-section'];
+
+const revealSections = document.querySelectorAll('section, footer');
+revealSections.forEach((sec, i) => {
+  sec.style.position = 'relative';
+  const cls = revealMap[i] || 'reveal-scale';
+  const skipOpacity = skipOpacitySections.includes(sec.id);
+
+  if (!skipOpacity) {
+    sec.classList.add(cls);
+  }
+  // overflow hidden hanya untuk section non-siswa dan non-gallery (agar observer card tidak terganggu)
+  if (!skipOpacity) {
+    sec.style.overflow = 'hidden';
+  }
+
+  // Inject scanline element
+  const scanline = document.createElement('div');
+  scanline.className = 'section-scanline';
+  sec.appendChild(scanline);
+});
+
+const sectionRevealObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting && !en.target.classList.contains('in-view')) {
+      en.target.classList.add('in-view');
+
+      // Trigger scanline sweep
+      const scanline = en.target.querySelector('.section-scanline');
+      if (scanline) {
+        scanline.classList.remove('sweep');
+        void scanline.offsetWidth;
+        scanline.classList.add('sweep');
+      }
+    }
+  });
+}, { threshold: 0.08 });
+
+revealSections.forEach(sec => sectionRevealObs.observe(sec));
+
+/* ─── PERPISAHAN — WORD BY WORD ANIMATION ─── */
+
+// Build kata per kata dari data-sentence
+document.querySelectorAll('.perp-sentence').forEach(container => {
+  const sentence = container.getAttribute('data-sentence');
+  if (!sentence) return;
+  sentence.split(' ').forEach((word, i) => {
+    const span = document.createElement('span');
+    span.className = 'perp-word';
+    span.textContent = word;
+    span.style.transitionDelay = `${i * 0.07}s`;
+    container.appendChild(span);
+  });
+});
+
+// Observer untuk .perp-block
+const perpBlockObs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting && !en.target.classList.contains('in-view')) {
+      en.target.classList.add('in-view');
+      // Animasikan kata satu per satu dengan delay
+      const words = en.target.querySelectorAll('.perp-word');
+      words.forEach((w, i) => {
+        setTimeout(() => w.classList.add('landed'), 100 + i * 70);
+      });
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.perp-block').forEach(b => perpBlockObs.observe(b));
+
+// Observer untuk .perp-finale
+const perpFinaleEl = document.getElementById('perpFinale');
+if (perpFinaleEl) {
+  const perpFinaleObs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting && !en.target.classList.contains('in-view')) {
+        en.target.classList.add('in-view');
+        spawnPerpParticles();
+      }
+    });
+  }, { threshold: 0.2 });
+  perpFinaleObs.observe(perpFinaleEl);
+}
+
+// Spawn floating particles di finale
+function spawnPerpParticles() {
+  const container = document.getElementById('perpParticles');
+  if (!container) return;
+  const colors = ['rgba(168,216,255,0.5)', 'rgba(255,212,168,0.4)', 'rgba(200,169,110,0.5)', 'rgba(255,255,255,0.3)'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'perp-particle';
+    const size = Math.random() * 4 + 1;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      background:${color};
+      left:${Math.random() * 100}%;
+      top:${Math.random() * 100}%;
+      --d:${3 + Math.random() * 5}s;
+      --delay:${Math.random() * 3}s;
+      --op:${0.2 + Math.random() * 0.5};
+      --dx:${(Math.random() - 0.5) * 40}px;
+      --dy:${-(Math.random() * 60 + 20)}px;
+    `;
+    container.appendChild(p);
+  }
+}
+
+
+</script>
+</body>
+</html>
